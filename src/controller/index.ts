@@ -54,4 +54,20 @@ figma.ui.onmessage = async (msg) => {
       figma.notify("Please select at least one node");
     }
   }
+
+  if (msg.type === "set-textnodes") {
+    const textObjects = msg.textObjects as textObject[];
+
+    console.log(textObjects);
+
+    textObjects.forEach(async (textObject) => {
+      const node = figma.getNodeById(textObject.id) as TextNode;
+
+      // replace text
+      await figma.loadFontAsync(node.fontName as FontName);
+      node.characters = textObject.text;
+    });
+
+    figma.notify("Text updated");
+  }
 };
