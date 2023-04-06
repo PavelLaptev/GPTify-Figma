@@ -5,6 +5,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HTMLInlineCSSWebpackPlugin =
   require("html-inline-css-webpack-plugin").default;
 const path = require("path");
+const dotenv = require("dotenv-webpack");
 
 // Export a function that takes in the environment and argv objects
 module.exports = (env, argv) => ({
@@ -55,6 +56,7 @@ module.exports = (env, argv) => ({
 
   // Define the plugins that should be used in the build process
   plugins: [
+    new dotenv(),
     // Generate "ui.html" and inline "ui.js" into it
     new HtmlWebpackPlugin({
       template: "./src/app/index.html",

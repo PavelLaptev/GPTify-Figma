@@ -1,6 +1,8 @@
 // clear console on reload
 console.clear();
 
+figma.skipInvisibleInstanceChildren = true;
+
 // default plugin size
 const pluginFrameSize = {
   width: 340,
@@ -10,25 +12,46 @@ const pluginFrameSize = {
 // show plugin UI
 figma.showUI(__html__, pluginFrameSize);
 
+const findAllTextNodes = (nodes: readonly SceneNode[]): TextNode[] => {
+  const textNodes: TextNode[] = [];
+
+  const findTextNodes = (nodes: readonly SceneNode[]) => {
+    for (const node of nodes) {
+      if (node.type === "TEXT") {
+        textNodes.push(node as TextNode);
+      } else if ("children" in node) {
+        findTextNodes(node.children);
+      }
+    }
+  };
+
+  findTextNodes(nodes);
+  return textNodes;
+};
+
 // listen for messages from the UI
 figma.ui.onmessage = async (msg) => {
-  const isSomethingSelected = figma.currentPage.selection.length !== 0;
+  const selection = figma.currentPage.selection;
+  const isSomethingSelected = selection.length > 0;
 
-  if (msg.type === "add-outline") {
+  if (msg.type === "get-textnodes") {
     if (isSomethingSelected) {
-      console.log(msg);
+      const textNodes = findAllTextNodes(selection);
 
-      const selection = figma.currentPage.selection;
+      const textObjects = textNodes.map((node) => {
+        return {
+          id: node.id,
+          text: node.characters,
+          type: node.type,
+        };
+      }) as textObject[];
 
-      selection.forEach((node: FrameNode) => {
-        node.strokes = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
-        node.strokeWeight = Number(msg.value);
-        node.strokeAlign = "OUTSIDE";
-        node.strokeCap = "ROUND";
-        node.strokeJoin = "ROUND";
+      figma.ui.postMessage({
+        type: "get-textnodes",
+        textObjects,
       });
     } else {
-      figma.notify("Select a node first");
+      figma.notify("Please select at least one node");
     }
   }
 };
