@@ -14,20 +14,17 @@
   height: var(--input-button-height);
   border: 2px solid var(--color-primary);
   border-radius: var(--input-button-radius);
-  padding: 12px;
+  padding: 6px 12px;
 
   font-size: 14px;
   color: var(--color-primary);
   font-weight: 700;
 
-  transition: border 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
 
   &:hover,
-  &:focus {
-    border: 2px solid var(--color-secondary);
-  }
-
-  &:focus {
+  &:focus-visible {
     outline: none;
+    border: 2px solid var(--color-secondary);
   }
 }

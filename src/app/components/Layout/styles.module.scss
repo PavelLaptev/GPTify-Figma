@@ -1,0 +1,24 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.gap-small {
+  gap: 8px;
+}
+
+.gap-medium {
+  gap: 16px;
+}
+
+.gap-large {
+  gap: 24px;
+}
+
+.divider {
+  height: 1px;
+  width: 100%;
+  background-color: var(--color-primary);
+  opacity: 0.6;
+  border: none;
+}

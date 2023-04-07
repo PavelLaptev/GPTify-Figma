@@ -1,13 +1,16 @@
 import React from "react";
+import { Input, Button, Layout, Header } from "./../../components";
 
 interface Props {
   apiKey: string;
 }
 
-export const requestToTranslate = async (apiKey, textObjArr: textObject[]) => {
-  const prompt = `Take this array: 
-        ${JSON.stringify(textObjArr)}
-        and translate key "text" into german. If a text already in german — skip it. Return only the array with the translated text.`;
+function removeLeadingNewLines(str) {
+  return str.replace(/^\n+/, "");
+}
+
+export const requestToTranslate = async (apiKey, text, language) => {
+  const prompt = `Translate text into ${language}: \`${text}\`. Return only the translation with the same format as the original text.`;
 
   try {
     const res = await fetch(`https://api.openai.com/v1/completions`, {
@@ -20,10 +23,7 @@ export const requestToTranslate = async (apiKey, textObjArr: textObject[]) => {
         model: "text-davinci-003",
         prompt: prompt,
         max_tokens: 70,
-        temperature: 0.9,
-        top_p: 1,
-        frequency_penalty: 0,
-        presence_penalty: 0,
+        temperature: 0,
       }),
     });
 
@@ -38,6 +38,7 @@ export const requestToTranslate = async (apiKey, textObjArr: textObject[]) => {
 // Add parent class for sub-components
 export const TranslateSection: React.FC<Props> = (props) => {
   const [apiKey, setApiKey] = React.useState(props.apiKey);
+  const [language, setLanguage] = React.useState("german");
 
   const handleTranslation = async () => {
     parent.postMessage({ pluginMessage: { type: "get-textnodes" } }, "*");
@@ -53,35 +54,53 @@ export const TranslateSection: React.FC<Props> = (props) => {
 
         console.log("textObjects", textObjects);
 
-        requestToTranslate(apiKey, textObjects)
-          .then((response) => {
-            console.log("response", response.choices[0].text);
-            const translatedTextNodes = JSON.parse(response.choices[0].text);
+        textObjects.forEach(async (textObject) => {
+          await requestToTranslate(apiKey, textObject.text, language).then(
+            (response) => {
+              console.log("response", response);
+              const translatedTextNode = removeLeadingNewLines(
+                response.choices[0].text
+              );
 
-            console.log("translatedTextNodes", translatedTextNodes);
+              console.log("translatedTextNode", translatedTextNode);
 
-            parent.postMessage(
-              {
-                pluginMessage: {
-                  type: "set-textnodes",
-                  textObjects: translatedTextNodes,
+              parent.postMessage(
+                {
+                  pluginMessage: {
+                    type: "set-textnode",
+                    textObject: {
+                      id: textObject.id,
+                      text: translatedTextNode,
+                    },
+                  },
                 },
-              },
-              "*"
-            );
-          })
-          .catch((error) => console.error(error));
+                "*"
+              );
+            }
+          );
+        });
       }
     };
-  }, []);
+  }, [language]);
 
   React.useEffect(() => {
     setApiKey(props.apiKey);
   }, [props.apiKey]);
 
   return (
-    <section>
-      <button onClick={handleTranslation}>Translate selected</button>
-    </section>
+    <Layout gap="medium" divider>
+      <Header
+        title="Translate"
+        subtitle="Select text nodes or layers/frames/groups and translate them into preferred language."
+      />
+      <Layout gap="small">
+        <Input
+          type="text"
+          value={language}
+          onChange={(e) => setLanguage(e.target.value)}
+        />
+        <Button onClick={handleTranslation} label="Translate selected" />
+      </Layout>
+    </Layout>
   );
 };

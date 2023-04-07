@@ -18,7 +18,7 @@ const Input: React.FC<Props> = (props) => {
 
   return (
     <div className={`${styles.wrap} ${props.className}`}>
-      <label className={styles.label}>{props.label}</label>
+      {props.label && <label className={styles.label}>{props.label}</label>}
       <input
         {...props}
         className={styles.input}
@@ -32,7 +32,7 @@ const Input: React.FC<Props> = (props) => {
 Input.defaultProps = {
   className: "",
   value: "",
-  label: "Label",
+  label: "",
 };
 
 export default Input;

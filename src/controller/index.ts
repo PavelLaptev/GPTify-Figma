@@ -55,18 +55,26 @@ figma.ui.onmessage = async (msg) => {
     }
   }
 
-  if (msg.type === "set-textnodes") {
-    const textObjects = msg.textObjects as textObject[];
+  if (msg.type === "set-textnode") {
+    const textObject = msg.textObject as textObject;
 
-    console.log(textObjects);
+    console.log(textObject);
 
-    textObjects.forEach(async (textObject) => {
-      const node = figma.getNodeById(textObject.id) as TextNode;
+    const node = figma.getNodeById(textObject.id) as TextNode;
 
-      // replace text
-      await figma.loadFontAsync(node.fontName as FontName);
-      node.characters = textObject.text;
-    });
+    // replace text
+    await figma.loadFontAsync(node.fontName as FontName);
+    node.characters = textObject.text;
+
+    // console.log(textObjects);
+
+    // textObjects.forEach(async (textObject) => {
+    //   const node = figma.getNodeById(textObject.id) as TextNode;
+
+    //   // replace text
+    //   await figma.loadFontAsync(node.fontName as FontName);
+    //   node.characters = textObject.text;
+    // });
 
     figma.notify("Text updated");
   }
