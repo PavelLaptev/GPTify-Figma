@@ -5,7 +5,6 @@ interface Props {
   className?: string;
   children?: React.ReactNode;
   gap: "null" | "small" | "medium" | "large";
-  divider?: boolean;
 }
 
 // Add parent class for sub-components
@@ -17,7 +16,6 @@ export const Layout: React.FC<Props> = (props) => {
       }`}
     >
       {props.children}
-      {props.divider && <hr className={styles.divider} />}
     </section>
   );
 };

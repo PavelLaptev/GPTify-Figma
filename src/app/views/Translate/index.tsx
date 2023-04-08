@@ -1,10 +1,12 @@
 import React from "react";
+import { prompt } from "./prompt";
 import {
   Input,
   Button,
   Layout,
   HeaderWrap,
   HeaderBack,
+  ViewGithubSource,
 } from "../../components";
 
 interface Props {
@@ -13,21 +15,21 @@ interface Props {
 }
 
 function removeLeadingNewLines(str) {
-  return str.replace(/^\n+/, "");
+  return str.replace(/^\n+|\n+$/g, "");
 }
 
 export const requestToTranslate = async (apiKey, text, language) => {
   try {
-    const res = await fetch("https://api.openai.com/v1/edits", {
+    const res = await fetch("https://api.openai.com/v1/completions", {
       method: "POST",
       headers: {
         "content-type": "application/json",
         authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "text-davinci-edit-001",
-        input: text,
-        instruction: `Translate and return all text into ${language}.`,
+        model: "text-davinci-003",
+        prompt: prompt(language, text),
+        max_tokens: 70,
         temperature: 0,
       }),
     });
@@ -67,7 +69,7 @@ export const Translate: React.FC<Props> = (props) => {
                 response.choices[0].text
               );
 
-              // console.log("translatedTextNode", translatedTextNode);
+              console.log("translatedTextNode", translatedTextNode);
 
               parent.postMessage(
                 {
@@ -93,27 +95,30 @@ export const Translate: React.FC<Props> = (props) => {
   }, [props.apiKey]);
 
   return (
-    <Layout gap="medium">
-      <HeaderWrap setView={props.setView}>
-        <HeaderBack
-          onClick={() => {
-            props.setView("text");
-          }}
-          label="Translate"
-        />
-      </HeaderWrap>
-      <p className="caption">
-        Select text nodes or layers/frames/groups and translate them into
-        preferred language.
-      </p>
-      <Layout gap="small">
-        <Input
-          type="text"
-          value={language}
-          onChange={(e) => setLanguage(e.target.value)}
-        />
-        <Button onClick={handleTranslation} label="Translate selected" />
+    <>
+      <Layout gap="medium">
+        <HeaderWrap setView={props.setView}>
+          <HeaderBack
+            onClick={() => {
+              props.setView("text");
+            }}
+            label="Translate"
+          />
+        </HeaderWrap>
+        <p className="caption">
+          Select text nodes or layers/frames/groups and translate them into
+          preferred language.
+        </p>
+        <Layout gap="small">
+          <Input
+            type="text"
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+          />
+          <Button onClick={handleTranslation} label="Translate selected" />
+        </Layout>
       </Layout>
-    </Layout>
+      <ViewGithubSource link="" />
+    </>
   );
 };

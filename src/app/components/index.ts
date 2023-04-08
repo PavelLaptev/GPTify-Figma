@@ -7,3 +7,4 @@ export { HeaderTabs } from "./HeaderTabs";
 export { HeaderBack } from "./HeaderBack";
 export { ListItem } from "./ListItem";
 export { List } from "./List";
+export { ViewGithubSource } from "./ViewGithubSource";
