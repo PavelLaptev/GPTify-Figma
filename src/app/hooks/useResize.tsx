@@ -1,15 +1,16 @@
 import React from "react";
 
-export const useResize = (depRef: React.RefObject<HTMLElement>) => {
-  console.log("depRef", depRef);
-
+export const useResize = (
+  parentRef: React.RefObject<HTMLElement>,
+  view: viewsType
+) => {
   React.useEffect(() => {
-    if (!depRef.current) return;
+    if (!parentRef.current) return;
 
     const paddings = 40;
 
     // get height of the first element
-    const height = depRef.current.children[0].clientHeight + paddings;
+    const height = parentRef.current.children[0].clientHeight + paddings;
 
     console.log("height", height);
 
@@ -23,5 +24,5 @@ export const useResize = (depRef: React.RefObject<HTMLElement>) => {
       },
       "*"
     );
-  }, [depRef.current]);
+  }, [parentRef.current, view]);
 };

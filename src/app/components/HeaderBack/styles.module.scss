@@ -1,0 +1,35 @@
+.wrap {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+
+  &:hover {
+    .label {
+      opacity: 0.3;
+    }
+
+    .icon {
+      transform: translateX(-4px);
+    }
+  }
+}
+
+.label {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 120%;
+  color: var(--main-text-color);
+  margin: 0;
+  user-select: none;
+  transition: all 0.1s ease-in-out;
+}
+
+.icon {
+  padding: 0;
+  height: 24px;
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.1s ease-in-out;
+}

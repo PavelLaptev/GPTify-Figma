@@ -1,5 +1,11 @@
 import React from "react";
-import { Input, Button, Layout } from "../../components";
+import {
+  Input,
+  Button,
+  Layout,
+  HeaderWrap,
+  HeaderBack,
+} from "../../components";
 
 interface Props {
   apiKey: string;
@@ -11,19 +17,17 @@ function removeLeadingNewLines(str) {
 }
 
 export const requestToTranslate = async (apiKey, text, language) => {
-  const prompt = `Translate text into ${language}: \`${text}\`. Return only the translation with the same format as the original text.`;
-
   try {
-    const res = await fetch(`https://api.openai.com/v1/completions`, {
+    const res = await fetch("https://api.openai.com/v1/edits", {
       method: "POST",
       headers: {
         "content-type": "application/json",
         authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "text-davinci-003",
-        prompt: prompt,
-        max_tokens: 70,
+        model: "text-davinci-edit-001",
+        input: text,
+        instruction: `Translate and return all text into ${language}.`,
         temperature: 0,
       }),
     });
@@ -63,7 +67,7 @@ export const Translate: React.FC<Props> = (props) => {
                 response.choices[0].text
               );
 
-              console.log("translatedTextNode", translatedTextNode);
+              // console.log("translatedTextNode", translatedTextNode);
 
               parent.postMessage(
                 {
@@ -89,7 +93,19 @@ export const Translate: React.FC<Props> = (props) => {
   }, [props.apiKey]);
 
   return (
-    <Layout gap="medium" divider>
+    <Layout gap="medium">
+      <HeaderWrap setView={props.setView}>
+        <HeaderBack
+          onClick={() => {
+            props.setView("text");
+          }}
+          label="Translate"
+        />
+      </HeaderWrap>
+      <p className="caption">
+        Select text nodes or layers/frames/groups and translate them into
+        preferred language.
+      </p>
       <Layout gap="small">
         <Input
           type="text"

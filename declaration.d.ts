@@ -16,4 +16,13 @@ type textObject = {
   type: "TEXT";
 };
 
-type viewsType = "text" | "translate" | "launch" | "settings" | "images";
+type viewsType =
+  | "text"
+  | "translate"
+  | "launch"
+  | "settings"
+  | "images"
+  | "currency"
+  | "dates"
+  | "tone-of-voice"
+  | "custom-prompt";

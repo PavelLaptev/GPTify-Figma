@@ -3,8 +3,8 @@ import {
   Input,
   Button,
   Layout,
-  TabsHeader,
-  ListItem,
+  HeaderWrap,
+  HeaderTabs,
   List,
 } from "../../components";
 import styles from "./styles.module.scss";
@@ -16,7 +16,9 @@ interface Props {
 export const Text: React.FC<Props> = (props) => {
   return (
     <Layout gap="medium">
-      <TabsHeader onTabChange={props.setView} currentTab="text" />
+      <HeaderWrap setView={props.setView}>
+        <HeaderTabs currentTab="text" setView={props.setView} />
+      </HeaderWrap>
       <p className="caption">
         You can modify existing text or generate new by selecting one of the
         available options below.
@@ -25,23 +27,33 @@ export const Text: React.FC<Props> = (props) => {
         options={[
           {
             label: "Translate",
-            onClick: () => {},
+            onClick: () => {
+              props.setView("translate");
+            },
           },
           {
             label: "Currency",
-            onClick: () => {},
+            onClick: () => {
+              props.setView("currency");
+            },
           },
           {
             label: "Dates",
-            onClick: () => {},
+            onClick: () => {
+              props.setView("dates");
+            },
           },
           {
             label: "Tone of voice",
-            onClick: () => {},
+            onClick: () => {
+              props.setView("tone-of-voice");
+            },
           },
           {
-            label: "Generate text",
-            onClick: () => {},
+            label: "Custom prompt",
+            onClick: () => {
+              props.setView("custom-prompt");
+            },
           },
         ]}
       />

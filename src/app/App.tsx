@@ -10,7 +10,7 @@ const App = () => {
 
   const [view, setView] = React.useState<viewsType>("launch");
 
-  useResize(wrapRef);
+  useResize(wrapRef, view);
 
   const mountView = () => {
     switch (view) {
