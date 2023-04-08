@@ -14,7 +14,7 @@
   height: var(--input-button-height);
   border: 2px solid var(--color-primary);
   border-radius: var(--input-button-radius);
-  padding: 6px 12px;
+  padding: 6px 8px;
 
   font-size: 14px;
   color: var(--color-primary);
@@ -26,5 +26,11 @@
   &:focus-visible {
     outline: none;
     border: 2px solid var(--color-secondary);
+  }
+
+  // placeholder
+  &::placeholder {
+    color: var(--color-primary);
+    opacity: 0.5;
   }
 }

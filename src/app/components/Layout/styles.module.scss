@@ -3,6 +3,10 @@
   flex-direction: column;
 }
 
+.gap-null {
+  gap: 0;
+}
+
 .gap-small {
   gap: 8px;
 }
@@ -19,6 +23,6 @@
   height: 1px;
   width: 100%;
   background-color: var(--color-primary);
-  opacity: 0.6;
+  opacity: 0.3;
   border: none;
 }

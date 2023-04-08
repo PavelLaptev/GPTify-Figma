@@ -8,7 +8,7 @@ interface Props {
 }
 
 // Add parent class for sub-components
-const Header: React.FC<Props> = (props) => {
+export const BackHeader: React.FC<Props> = (props) => {
   return (
     <section className={`${styles.wrap} ${props.className}`}>
       {props.title && <h2 className={styles.title}>{props.title}</h2>}
@@ -17,8 +17,6 @@ const Header: React.FC<Props> = (props) => {
   );
 };
 
-Header.defaultProps = {
+BackHeader.defaultProps = {
   className: "",
 };
-
-export default Header;

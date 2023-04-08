@@ -16,4 +16,10 @@
   &:hover {
     background-color: var(--color-secondary);
   }
+
+  &:disabled {
+    pointer-events: none;
+    background-color: var(--color-primary);
+    opacity: 0.5;
+  }
 }

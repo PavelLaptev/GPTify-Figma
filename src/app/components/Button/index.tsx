@@ -5,13 +5,15 @@ interface Props {
   className?: string;
   label?: string;
   onClick: () => void;
+  disabled?: boolean;
 }
 
 // Add parent class for sub-components
-const Input: React.FC<Props> = (props) => {
+export const Button: React.FC<Props> = (props) => {
   return (
     <button
       onClick={props.onClick}
+      disabled={props.disabled}
       className={`${styles.button} ${props.className}`}
     >
       <span>{props.label}</span>
@@ -19,9 +21,7 @@ const Input: React.FC<Props> = (props) => {
   );
 };
 
-Input.defaultProps = {
+Button.defaultProps = {
   className: "",
   label: "Button",
 };
-
-export default Input;

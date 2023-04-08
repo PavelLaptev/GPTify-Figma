@@ -1,34 +1,31 @@
 import * as React from "react";
+import { Translate, Launch, Text } from "./views";
+import { useResize } from "./hooks";
+
 import styles from "./app.module.scss";
-// import { Configuration, OpenAIApi } from "openai";
-
-import { TranslateSection } from "./sections/TranslateSection";
-
-const apiENVKey = process.env.REACT_APP_OPENAI_API_KEY;
 
 const App = () => {
-  const [inputValue, setInputValue] = React.useState(apiENVKey);
+  const wrapRef = React.useRef<HTMLDivElement>(null);
   const [apiKey, setApiKey] = React.useState("");
 
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
+  const [view, setView] = React.useState<viewsType>("launch");
 
-  const handleApply = () => {
-    setApiKey(inputValue);
+  useResize(wrapRef);
+
+  const mountView = () => {
+    switch (view) {
+      case "translate":
+        return <Translate apiKey={apiKey} setView={setView} />;
+      case "text":
+        return <Text setView={setView} />;
+      default:
+        return <Launch setApiKey={setApiKey} setView={setView} />;
+    }
   };
 
   return (
-    <section className={styles.wrap}>
-      {!apiKey ? (
-        <section>
-          <h1>GPTify</h1>
-          <input type="text" onChange={handleInput} value={inputValue} />
-          <button onClick={handleApply}>Apply</button>
-        </section>
-      ) : (
-        <TranslateSection apiKey={apiKey} />
-      )}
+    <section className={styles.wrap} ref={wrapRef}>
+      {mountView()}
     </section>
   );
 };

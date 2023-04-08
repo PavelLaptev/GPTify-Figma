@@ -4,12 +4,12 @@ import styles from "./styles.module.scss";
 interface Props {
   className?: string;
   children?: React.ReactNode;
-  gap: "small" | "medium" | "large";
+  gap: "null" | "small" | "medium" | "large";
   divider?: boolean;
 }
 
 // Add parent class for sub-components
-const Layout: React.FC<Props> = (props) => {
+export const Layout: React.FC<Props> = (props) => {
   return (
     <section
       className={`${styles.wrap} ${props.className} ${
@@ -25,5 +25,3 @@ const Layout: React.FC<Props> = (props) => {
 Layout.defaultProps = {
   className: "",
 };
-
-export default Layout;

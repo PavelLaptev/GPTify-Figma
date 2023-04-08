@@ -8,7 +8,7 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Input: React.FC<Props> = (props) => {
+export const Input: React.FC<Props> = (props) => {
   const [value, setValue] = React.useState(props.value);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,5 +34,3 @@ Input.defaultProps = {
   value: "",
   label: "",
 };
-
-export default Input;

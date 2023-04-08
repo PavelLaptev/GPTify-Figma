@@ -1,13 +1,19 @@
 @import "./font-face";
 
 :root {
+  --container-padding: 20px;
   --input-button-height: 36px;
-  --input-button-radius: 4px;
 
   --color-primary: #333;
   --color-secondary: #10a37f;
   --color-white: #fff;
-  --color-background: #f5ffb7;
+  --color-background: #f4f4f4;
+
+  --color-divider: #0000003f;
+
+  --caption-text-color: #707070;
+  --main-text-color: #333;
+  --link-text-color: #10a37f;
 }
 
 *,
@@ -35,5 +41,22 @@ body {
   ::selection {
     background: var(--color-secondary);
     color: var(--color-white);
+  }
+}
+
+.caption {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 150%;
+  color: var(--caption-text-color);
+  margin: 0;
+}
+
+.link {
+  color: var(--link-text-color);
+  text-decoration: underline;
+
+  &:hover {
+    color: var(--color-primary);
   }
 }

@@ -15,3 +15,5 @@ type textObject = {
   text: string;
   type: "TEXT";
 };
+
+type viewsType = "text" | "translate" | "launch" | "settings" | "images";

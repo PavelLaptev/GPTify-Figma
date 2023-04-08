@@ -1,8 +1,9 @@
 import React from "react";
-import { Input, Button, Layout, Header } from "./../../components";
+import { Input, Button, Layout } from "../../components";
 
 interface Props {
   apiKey: string;
+  setView: (view: viewsType) => void;
 }
 
 function removeLeadingNewLines(str) {
@@ -36,7 +37,7 @@ export const requestToTranslate = async (apiKey, text, language) => {
 };
 
 // Add parent class for sub-components
-export const TranslateSection: React.FC<Props> = (props) => {
+export const Translate: React.FC<Props> = (props) => {
   const [apiKey, setApiKey] = React.useState(props.apiKey);
   const [language, setLanguage] = React.useState("german");
 
@@ -89,10 +90,6 @@ export const TranslateSection: React.FC<Props> = (props) => {
 
   return (
     <Layout gap="medium" divider>
-      <Header
-        title="Translate"
-        subtitle="Select text nodes or layers/frames/groups and translate them into preferred language."
-      />
       <Layout gap="small">
         <Input
           type="text"

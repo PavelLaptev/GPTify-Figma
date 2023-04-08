@@ -1,3 +1,5 @@
+import { handleResize } from "./handleResize";
+
 // clear console on reload
 console.clear();
 
@@ -5,7 +7,7 @@ figma.skipInvisibleInstanceChildren = true;
 
 // default plugin size
 const pluginFrameSize = {
-  width: 340,
+  width: 360,
   height: 370,
 };
 
@@ -31,6 +33,8 @@ const findAllTextNodes = (nodes: readonly SceneNode[]): TextNode[] => {
 
 // listen for messages from the UI
 figma.ui.onmessage = async (msg) => {
+  handleResize(msg);
+
   const selection = figma.currentPage.selection;
   const isSomethingSelected = selection.length > 0;
 
@@ -79,3 +83,5 @@ figma.ui.onmessage = async (msg) => {
     figma.notify("Text updated");
   }
 };
+
+figma.currentPage.setRelaunchData({ open: "" });
