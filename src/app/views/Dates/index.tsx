@@ -1,5 +1,4 @@
 import React from "react";
-import { useOpenAICompletion } from "./../../hooks";
 import { requestToOpenIA, getTextnodes } from "../../../utils";
 import { prompt } from "./prompt";
 import {
@@ -17,14 +16,28 @@ interface Props {
 }
 
 // Add parent class for sub-components
-export const Translate: React.FC<Props> = (props) => {
+export const Dates: React.FC<Props> = (props) => {
   const [language, setLanguage] = React.useState("german");
 
-  useOpenAICompletion({
-    apiKey: props.apiKey,
-    prompt: (nodeText: string) => prompt(language, nodeText),
-    deps: [language],
-  });
+  React.useEffect(() => {
+    window.onmessage = async (event) => {
+      const msg = event.data.pluginMessage;
+
+      if (msg.type === "get-textnodes") {
+        const textObjects = msg.textObjects;
+
+        console.log("textObjects", textObjects);
+
+        textObjects.forEach(async (textObject) => {
+          await requestToOpenIA(
+            props.apiKey,
+            prompt(language, textObject.text),
+            textObject.id
+          );
+        });
+      }
+    };
+  }, [language]);
 
   return (
     <Layout gap="null">
@@ -34,12 +47,11 @@ export const Translate: React.FC<Props> = (props) => {
             onClick={() => {
               props.setView("text");
             }}
-            label="Translate"
+            label="Dates"
           />
         </HeaderWrap>
         <p className="caption">
-          Select text nodes or layers/frames/groups and translate them into
-          preferred language.
+          Using this prompt, you can convert any dates to your preferred format.
         </p>
         <Layout gap="small">
           <Input
@@ -50,7 +62,7 @@ export const Translate: React.FC<Props> = (props) => {
           <Button onClick={getTextnodes} label="Translate selected" />
         </Layout>
       </Layout>
-      <ViewGithubSource link="https://github.com/PavelLaptev/GPTify-Figma/blob/main/src/app/views/Translate/prompt.ts" />
+      <ViewGithubSource link="https://github.com/PavelLaptev/GPTify-Figma/blob/main/src/app/views/Dates/prompt.ts" />
     </Layout>
   );
 };
