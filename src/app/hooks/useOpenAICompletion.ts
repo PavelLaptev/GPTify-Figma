@@ -14,9 +14,11 @@ export const useOpenAICompletion = (props: UseOpenAICompletionProps) => {
       if (msg.type === "get-textnodes") {
         const textObjects = msg.textObjects;
 
-        console.log("textObjects", textObjects);
-
         textObjects.forEach(async (textObject) => {
+          console.log(
+            "props.prompt(textObject.text)",
+            props.prompt(textObject.text)
+          );
           try {
             const res = await fetch("https://api.openai.com/v1/completions", {
               method: "POST",
@@ -29,6 +31,9 @@ export const useOpenAICompletion = (props: UseOpenAICompletionProps) => {
                 prompt: props.prompt(textObject.text),
                 max_tokens: 150,
                 temperature: 0,
+                top_p: 1,
+                frequency_penalty: 1,
+                presence_penalty: 1,
               }),
             });
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { useOpenAICompletion } from "./../../hooks";
+import { useOpenAICompletion } from "../../hooks";
 import { getTextnodes } from "../../../utils";
 import { prompt } from "./prompt";
 import {
@@ -16,7 +16,7 @@ interface Props {
   setView: (view: viewsType) => void;
 }
 
-export const Dates: React.FC<Props> = (props) => {
+export const Currency: React.FC<Props> = (props) => {
   const [dateFormat, setDateFormat] = React.useState("DD/MM/YYYY");
 
   useOpenAICompletion({
@@ -33,11 +33,17 @@ export const Dates: React.FC<Props> = (props) => {
             onClick={() => {
               props.setView("text");
             }}
-            label="Dates"
+            label="Currency"
           />
         </HeaderWrap>
         <p className="caption">
-          Using this prompt, you can convert any dates to your preferred format.
+          This prompt will find any currencies in your text and convert them to
+          another currency.
+        </p>
+        <p className="caption">
+          ⚠️ Please note that the exchange rates provided may be outdated, as
+          the information used to train this model only goes up until September
+          2021.
         </p>
         <Layout gap="small">
           <Input
@@ -45,10 +51,10 @@ export const Dates: React.FC<Props> = (props) => {
             value={dateFormat}
             onChange={(e) => setDateFormat(e.target.value)}
           />
-          <Button onClick={getTextnodes} label="Convert dates" />
+          <Button onClick={getTextnodes} label="Convert currency" />
         </Layout>
       </Layout>
-      <ViewGithubSource link="https://github.com/PavelLaptev/GPTify-Figma/blob/main/src/app/views/Translate/prompt.ts" />
+      <ViewGithubSource link="https://github.com/PavelLaptev/GPTify-Figma/blob/main/src/app/views/Currency/prompt.ts" />
     </Layout>
   );
 };

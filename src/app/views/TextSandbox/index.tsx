@@ -22,8 +22,8 @@ export const TextSandbox: React.FC<Props> = (props) => {
     prompt: "Make this text funny: ${text}",
     temperature: 0,
     topP: 1,
-    frequencyPenalty: 0,
-    presencePenalty: 0,
+    frequencyPenalty: 1,
+    presencePenalty: 1,
     maximumTokens: 150,
     n: 1,
     variantToUse: 0,
@@ -140,7 +140,7 @@ export const TextSandbox: React.FC<Props> = (props) => {
             min={1}
             max={4000}
             step={1}
-            value={150}
+            value={config.maximumTokens}
             onChange={(value: number) =>
               handleChangeConfig("maximumTokens", value)
             }
@@ -150,16 +150,16 @@ export const TextSandbox: React.FC<Props> = (props) => {
             min={1}
             max={10}
             step={1}
-            value={1}
+            value={config.n}
             onChange={(value: number) => handleChangeConfig("n", value)}
           />
           <RangeInput
             label="Variant to use"
             helperText="Select the variant to use from the generated variants"
-            min={1}
+            min={0}
             max={10}
             step={1}
-            value={1}
+            value={config.variantToUse}
             onChange={(value: number) => handleChangeConfig("n", value)}
           />
           <RangeInput
@@ -167,7 +167,7 @@ export const TextSandbox: React.FC<Props> = (props) => {
             min={0}
             max={1}
             step={0.01}
-            value={1}
+            value={config.topP}
             onChange={(value: number) => handleChangeConfig("topP", value)}
           />
           <RangeInput
@@ -175,7 +175,7 @@ export const TextSandbox: React.FC<Props> = (props) => {
             min={0}
             max={2}
             step={0.01}
-            value={0}
+            value={config.frequencyPenalty}
             onChange={(value: number) =>
               handleChangeConfig("frequencyPenalty", value)
             }
@@ -185,7 +185,7 @@ export const TextSandbox: React.FC<Props> = (props) => {
             min={0}
             max={2}
             step={0.01}
-            value={0}
+            value={config.presencePenalty}
             onChange={(value: number) =>
               handleChangeConfig("presencePenalty", value)
             }

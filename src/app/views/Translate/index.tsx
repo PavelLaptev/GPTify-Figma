@@ -1,6 +1,6 @@
 import React from "react";
 import { useOpenAICompletion } from "./../../hooks";
-import { requestToOpenIA, getTextnodes } from "../../../utils";
+import { getTextnodes } from "../../../utils";
 import { prompt } from "./prompt";
 import {
   Input,

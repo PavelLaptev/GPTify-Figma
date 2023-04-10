@@ -6,6 +6,7 @@ interface Props {
   value?: string;
   label?: string;
   helperText?: string;
+  placeholder?: string;
   type?: "text" | "number";
   min?: number;
   max?: number;
@@ -42,6 +43,7 @@ export const Input: React.FC<Props> = (props) => {
         type={props.type}
         disabled={props.disabled}
         onChange={handleChange}
+        placeholder={props.placeholder}
       />
     </div>
   );

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Translate, Launch, Text, TextSandbox } from "./views";
+import { Translate, Launch, Text, Dates, Currency, TextSandbox } from "./views";
 import { useResize } from "./hooks";
 
 import styles from "./app.module.scss";
@@ -14,10 +14,14 @@ const App = () => {
 
   const mountView = () => {
     switch (view) {
-      case "translate":
-        return <Translate apiKey={apiKey} setView={setView} />;
       case "text":
         return <Text setView={setView} />;
+      case "translate":
+        return <Translate apiKey={apiKey} setView={setView} />;
+      case "dates":
+        return <Dates apiKey={apiKey} setView={setView} />;
+      case "currency":
+        return <Currency apiKey={apiKey} setView={setView} />;
       case "sandbox":
         return <TextSandbox apiKey={apiKey} setView={setView} />;
       default:

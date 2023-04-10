@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  Input,
-  Button,
-  Layout,
-  HeaderWrap,
-  HeaderTabs,
-  List,
-} from "../../components";
-import styles from "./styles.module.scss";
+import { Layout, HeaderWrap, HeaderTabs, List } from "../../components";
 
 interface Props {
   setView: (view: viewsType) => void;

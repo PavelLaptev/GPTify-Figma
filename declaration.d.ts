@@ -36,4 +36,5 @@ type modelSettingsType = {
   presencePenalty: number;
   maximumTokens: number;
   n: number;
+  variantToUse: number;
 };
