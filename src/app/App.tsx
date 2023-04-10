@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Translate, Launch, Text } from "./views";
+import { Translate, Launch, Text, TextSandbox } from "./views";
 import { useResize } from "./hooks";
 
 import styles from "./app.module.scss";
@@ -18,6 +18,8 @@ const App = () => {
         return <Translate apiKey={apiKey} setView={setView} />;
       case "text":
         return <Text setView={setView} />;
+      case "sandbox":
+        return <TextSandbox apiKey={apiKey} setView={setView} />;
       default:
         return <Launch setApiKey={setApiKey} setView={setView} />;
     }

@@ -1,4 +1,21 @@
 .wrap {
   display: flex;
+  flex-direction: column;
+  padding: 20px 0 0;
+}
+
+.link {
+  font-size: 12px;
+  line-height: 120%;
+  color: var(--caption-text-color);
+}
+
+.linkWrap {
+  display: flex;
+  align-items: center;
   gap: 8px;
+}
+
+.divider {
+  margin-bottom: 20px;
 }

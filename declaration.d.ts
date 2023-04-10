@@ -10,7 +10,7 @@ declare module "*.jpeg";
 declare module "*.webp";
 declare module "*.svg";
 
-type textObject = {
+type textObjectType = {
   id: string;
   text: string;
   type: "TEXT";
@@ -25,4 +25,15 @@ type viewsType =
   | "currency"
   | "dates"
   | "tone-of-voice"
-  | "custom-prompt";
+  | "sandbox";
+
+type modelSettingsType = {
+  model: string;
+  prompt: string;
+  temperature: number;
+  topP: number;
+  frequencyPenalty: number;
+  presencePenalty: number;
+  maximumTokens: number;
+  n: number;
+};

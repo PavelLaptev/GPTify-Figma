@@ -1,5 +1,7 @@
 import { handleResize } from "./handleResize";
 
+import { removeLeadingNewLines } from "./../utils";
+
 // clear console on reload
 console.clear();
 
@@ -48,7 +50,7 @@ figma.ui.onmessage = async (msg) => {
           text: node.characters,
           type: node.type,
         };
-      }) as textObject[];
+      }) as textObjectType[];
 
       figma.ui.postMessage({
         type: "get-textnodes",
@@ -60,24 +62,22 @@ figma.ui.onmessage = async (msg) => {
   }
 
   if (msg.type === "set-textnode") {
-    const textObject = msg.textObject as textObject;
-
-    console.log(textObject);
+    const textObject = msg.textObjectType as textObjectType;
 
     const node = figma.getNodeById(textObject.id) as TextNode;
 
     // replace text
     await figma.loadFontAsync(node.fontName as FontName);
-    node.characters = textObject.text;
+    node.characters = removeLeadingNewLines(textObject.text);
 
-    // console.log(textObjects);
+    // console.log(textObjectTypes);
 
-    // textObjects.forEach(async (textObject) => {
-    //   const node = figma.getNodeById(textObject.id) as TextNode;
+    // textObjectTypes.forEach(async (textObjectType) => {
+    //   const node = figma.getNodeById(textObjectType.id) as TextNode;
 
     //   // replace text
     //   await figma.loadFontAsync(node.fontName as FontName);
-    //   node.characters = textObject.text;
+    //   node.characters = textObjectType.text;
     // });
 
     figma.notify("Text updated");

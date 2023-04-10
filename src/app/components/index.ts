@@ -1,5 +1,7 @@
 export { Button } from "./Button";
 export { Input } from "./Input";
+export { RangeInput } from "./RangeInput";
+export { TextArea } from "./TextArea";
 export { Layout } from "./Layout";
 export { Icon } from "./Icon";
 export { HeaderWrap } from "./HeaderWrap";
@@ -8,3 +10,4 @@ export { HeaderBack } from "./HeaderBack";
 export { ListItem } from "./ListItem";
 export { List } from "./List";
 export { ViewGithubSource } from "./ViewGithubSource";
+export { Divider } from "./Divider";

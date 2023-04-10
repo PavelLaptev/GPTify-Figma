@@ -20,8 +20,16 @@ export const Text: React.FC<Props> = (props) => {
         <HeaderTabs currentTab="text" setView={props.setView} />
       </HeaderWrap>
       <p className="caption">
-        You can modify existing text or generate new by selecting one of the
-        available options below.
+        Modify or generate text using available options below. For suggestions
+        on improving prompts or model settings, submit a{" "}
+        <a
+          href="https://github.com/PavelLaptev/GPTify-Figma/issues"
+          target="_blank"
+          className="link"
+        >
+          Github issue
+        </a>
+        .
       </p>
       <List
         options={[
@@ -50,9 +58,9 @@ export const Text: React.FC<Props> = (props) => {
             },
           },
           {
-            label: "Custom prompt",
+            label: "Sandbox",
             onClick: () => {
-              props.setView("custom-prompt");
+              props.setView("sandbox");
             },
           },
         ]}

@@ -6,24 +6,17 @@ interface Props {
   value?: string;
   label?: string;
   helperText?: string;
-  type?: "text" | "number";
-  min?: number;
-  max?: number;
-  disabled?: boolean;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  rows?: number;
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-export const Input: React.FC<Props> = (props) => {
+export const TextArea: React.FC<Props> = (props) => {
   const [value, setValue] = React.useState(props.value);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
     props.onChange && props.onChange(e);
   };
-
-  React.useEffect(() => {
-    setValue(props.value);
-  }, [props.value]);
 
   return (
     <div className={`${styles.wrap} ${props.className}`}>
@@ -34,22 +27,19 @@ export const Input: React.FC<Props> = (props) => {
         )}
       </div>
 
-      <input
-        className={styles.input}
+      <textarea
+        className={styles.textarea}
         value={value}
-        min={props.min}
-        max={props.max}
-        type={props.type}
-        disabled={props.disabled}
         onChange={handleChange}
+        rows={props.rows}
       />
     </div>
   );
 };
 
-Input.defaultProps = {
+TextArea.defaultProps = {
   className: "",
   value: "",
   label: "",
-  type: "text",
+  rows: 3,
 };

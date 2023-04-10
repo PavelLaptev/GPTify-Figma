@@ -25,7 +25,8 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
+body,
+textarea {
   overflow-x: hidden;
   font-family: "Inter", sans-serif;
   font-size: 12px;

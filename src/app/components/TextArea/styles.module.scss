@@ -16,15 +16,14 @@
   opacity: 0.5;
 }
 
-.input {
-  height: var(--input-button-height);
+.textarea {
   border: 2px solid var(--color-primary);
   border-radius: var(--input-button-radius);
   padding: 6px 8px;
 
   font-size: 14px;
   color: var(--color-primary);
-  font-weight: 700;
+  font-weight: 500;
 
   transition: all 0.1s ease-in-out;
 
@@ -40,19 +39,6 @@
     opacity: 0.5;
   }
 
-  // remove arrows from number input
-  &[type="number"] {
-    -moz-appearance: textfield;
-  }
-
-  &[type="number"]::-webkit-outer-spin-button,
-  &[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  &:disabled {
-    pointer-events: none;
-    opacity: 0.5;
-  }
+  // remove resize
+  resize: none;
 }
