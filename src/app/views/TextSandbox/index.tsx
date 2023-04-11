@@ -118,7 +118,7 @@ export const TextSandbox: React.FC<Props> = (props) => {
         </p>
         <Divider />
         <Layout gap="medium">
-          <Input label="Model" value={config.model} disabled />
+          <Input id="model" label="Model" value={config.model} disabled />
           <TextArea
             label="Prompt"
             helperText="Use ${text} if you want ot modify the text"
@@ -126,6 +126,7 @@ export const TextSandbox: React.FC<Props> = (props) => {
             onChange={(e) => handleChangeConfig("prompt", e.target.value)}
           />
           <RangeInput
+            id="temperature"
             label="Temperature"
             min={0}
             max={1}
@@ -136,6 +137,7 @@ export const TextSandbox: React.FC<Props> = (props) => {
             }
           />
           <RangeInput
+            id="maximumTokens"
             label="Maximum Tokens"
             min={1}
             max={4000}
@@ -146,6 +148,7 @@ export const TextSandbox: React.FC<Props> = (props) => {
             }
           />
           <RangeInput
+            id="n"
             label="N (number of variants)"
             min={1}
             max={10}
@@ -154,6 +157,7 @@ export const TextSandbox: React.FC<Props> = (props) => {
             onChange={(value: number) => handleChangeConfig("n", value)}
           />
           <RangeInput
+            id="variantToUse"
             label="Variant to use"
             helperText="Select the variant to use from the generated variants"
             min={0}
@@ -163,6 +167,7 @@ export const TextSandbox: React.FC<Props> = (props) => {
             onChange={(value: number) => handleChangeConfig("n", value)}
           />
           <RangeInput
+            id="topP"
             label="Top P"
             min={0}
             max={1}
@@ -171,6 +176,7 @@ export const TextSandbox: React.FC<Props> = (props) => {
             onChange={(value: number) => handleChangeConfig("topP", value)}
           />
           <RangeInput
+            id="frequencyPenalty"
             label="Frequency Penalty"
             min={0}
             max={2}
@@ -181,6 +187,7 @@ export const TextSandbox: React.FC<Props> = (props) => {
             }
           />
           <RangeInput
+            id="presencePenalty"
             label="Presence Penalty"
             min={0}
             max={2}

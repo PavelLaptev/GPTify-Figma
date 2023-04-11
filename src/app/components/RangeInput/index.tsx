@@ -3,6 +3,7 @@ import { Input } from "../Input";
 import styles from "./styles.module.scss";
 
 interface Props {
+  id: string;
   className?: string;
   value: number;
   label: string;
@@ -25,6 +26,7 @@ export const RangeInput: React.FC<Props> = (props) => {
   return (
     <div className={`${styles.wrap} ${props.className}`}>
       <Input
+        id={props.id}
         className={styles.input}
         value={value.toString()}
         onChange={handleChange}

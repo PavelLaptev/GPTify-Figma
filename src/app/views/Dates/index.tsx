@@ -41,6 +41,8 @@ export const Dates: React.FC<Props> = (props) => {
         </p>
         <Layout gap="small">
           <Input
+            id="date-format"
+            label="Date format:"
             type="text"
             value={dateFormat}
             onChange={(e) => setDateFormat(e.target.value)}

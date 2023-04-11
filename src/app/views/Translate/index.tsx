@@ -22,7 +22,7 @@ export const Translate: React.FC<Props> = (props) => {
 
   useOpenAICompletion({
     apiKey: props.apiKey,
-    prompt: (nodeText: string) => prompt(language, nodeText),
+    prompt: prompt(language),
     deps: [language],
   });
 
@@ -43,6 +43,8 @@ export const Translate: React.FC<Props> = (props) => {
         </p>
         <Layout gap="small">
           <Input
+            id="language"
+            label="Translate to:"
             type="text"
             value={language}
             onChange={(e) => setLanguage(e.target.value)}

@@ -1,5 +1,6 @@
 import React from "react";
-import styles from "../Input/styles.module.scss";
+import inputStyles from "../Input/styles.module.scss";
+import selectStyles from "./styles.module.scss";
 
 interface Props {
   id: string;
@@ -8,17 +9,15 @@ interface Props {
   label?: string;
   helperText?: string;
   placeholder?: string;
-  type?: "text" | "number";
-  min?: number;
-  max?: number;
   disabled?: boolean;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  options: { value: string; label: string }[];
+  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-export const Input: React.FC<Props> = (props) => {
+export const Select: React.FC<Props> = (props) => {
   const [value, setValue] = React.useState(props.value);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue(e.target.value);
     props.onChange && props.onChange(e);
   };
@@ -28,11 +27,11 @@ export const Input: React.FC<Props> = (props) => {
   }, [props.value]);
 
   return (
-    <div className={`${styles.wrap} ${props.className}`}>
+    <div className={`${inputStyles.wrap} ${props.className}`}>
       {props.label || props.helperText ? (
-        <div className={styles.text}>
+        <div className={inputStyles.text}>
           {props.label && (
-            <label htmlFor={props.id} className={styles.label}>
+            <label htmlFor={props.id} className={inputStyles.label}>
               {props.label}
             </label>
           )}
@@ -42,25 +41,27 @@ export const Input: React.FC<Props> = (props) => {
         </div>
       ) : null}
 
-      <input
+      <select
         id={props.id}
         name={props.id}
-        className={styles.input}
+        className={`${inputStyles.input} ${selectStyles.select}`}
         value={value}
-        min={props.min}
-        max={props.max}
-        type={props.type}
         disabled={props.disabled}
         onChange={handleChange}
         placeholder={props.placeholder}
-      />
+      >
+        {props.options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
     </div>
   );
 };
 
-Input.defaultProps = {
+Select.defaultProps = {
   className: "",
   value: "",
   label: "",
-  type: "text",
 };

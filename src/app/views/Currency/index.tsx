@@ -17,12 +17,14 @@ interface Props {
 }
 
 export const Currency: React.FC<Props> = (props) => {
-  const [dateFormat, setDateFormat] = React.useState("DD/MM/YYYY");
+  const [convertFormat, setConvertFormat] = React.useState(
+    "{converted sum} USD"
+  );
 
   useOpenAICompletion({
     apiKey: props.apiKey,
-    prompt: (nodeText: string) => prompt(dateFormat, nodeText),
-    deps: [dateFormat],
+    prompt: (nodeText: string) => prompt(convertFormat, nodeText),
+    deps: [convertFormat],
   });
 
   return (
@@ -37,22 +39,26 @@ export const Currency: React.FC<Props> = (props) => {
           />
         </HeaderWrap>
         <p className="caption">
-          This prompt will find any currencies in your text and convert them to
-          another currency.
+          This prompt will find any currencies in your text and convert them
+          into your preferred currency and format.
         </p>
+
+        <Layout gap="small">
+          <Input
+            id="currency-format"
+            label="Convert into format:"
+            type="text"
+            value={convertFormat}
+            onChange={(e) => setConvertFormat(e.target.value)}
+          />
+          <Button onClick={getTextnodes} label="Convert currency" />
+        </Layout>
+
         <p className="caption">
           ⚠️ Please note that the exchange rates provided may be outdated, as
           the information used to train this model only goes up until September
           2021.
         </p>
-        <Layout gap="small">
-          <Input
-            type="text"
-            value={dateFormat}
-            onChange={(e) => setDateFormat(e.target.value)}
-          />
-          <Button onClick={getTextnodes} label="Convert currency" />
-        </Layout>
       </Layout>
       <ViewGithubSource link="https://github.com/PavelLaptev/GPTify-Figma/blob/main/src/app/views/Currency/prompt.ts" />
     </Layout>

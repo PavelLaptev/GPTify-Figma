@@ -30,6 +30,7 @@ export const Launch: React.FC<Props> = (props) => {
       <img className={styles.coverImg} src={coverImg} alt="" />
       <Layout gap="small">
         <Input
+          id="api-key"
           onChange={handleInput}
           value={inputValue}
           placeholder="API Key"
