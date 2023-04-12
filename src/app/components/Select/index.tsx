@@ -28,18 +28,11 @@ export const Select: React.FC<Props> = (props) => {
 
   return (
     <div className={`${inputStyles.wrap} ${props.className}`}>
-      {props.label || props.helperText ? (
-        <div className={inputStyles.text}>
-          {props.label && (
-            <label htmlFor={props.id} className={inputStyles.label}>
-              {props.label}
-            </label>
-          )}
-          {props.helperText && (
-            <span className={"caption"}>{props.helperText}</span>
-          )}
-        </div>
-      ) : null}
+      {props.label && (
+        <label htmlFor={props.id} className={inputStyles.label}>
+          {props.label}
+        </label>
+      )}
 
       <select
         id={props.id}
@@ -56,6 +49,10 @@ export const Select: React.FC<Props> = (props) => {
           </option>
         ))}
       </select>
+
+      {props.helperText && (
+        <span className={"caption"}>{props.helperText}</span>
+      )}
     </div>
   );
 };

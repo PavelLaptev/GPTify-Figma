@@ -25,12 +25,14 @@ type viewsType =
   | "currency"
   | "dates"
   | "tone-of-voice"
-  | "sandbox";
+  | "text-edits"
+  | "text-compose";
 
 type modelSettingsType = {
   model: string;
   prompt: string;
   temperature: number;
+  stopSequences: string[];
   topP: number;
   frequencyPenalty: number;
   presencePenalty: number;

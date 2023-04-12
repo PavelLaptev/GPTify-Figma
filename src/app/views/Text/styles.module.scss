@@ -6,3 +6,11 @@
   margin-left: calc(var(--container-padding) * -1);
   margin-bottom: calc(var(--container-padding) / 2);
 }
+
+.subtitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--main-text-color);
+  opacity: 0.3;
+  margin: 0;
+}

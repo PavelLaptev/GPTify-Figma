@@ -1,6 +1,6 @@
 import React from "react";
-import { Input } from "../Input";
-import styles from "./styles.module.scss";
+import inputStyles from "../Input/styles.module.scss";
+import rangeStyles from "./styles.module.scss";
 
 interface Props {
   id: string;
@@ -24,19 +24,26 @@ export const RangeInput: React.FC<Props> = (props) => {
   };
 
   return (
-    <div className={`${styles.wrap} ${props.className}`}>
-      <Input
-        id={props.id}
-        className={styles.input}
-        value={value.toString()}
-        onChange={handleChange}
-        helperText={props.helperText}
-        label={props.label}
-        type="number"
-        min={props.min}
-        max={props.max}
-      />
-      <div className={styles.range}>
+    <div className={`${rangeStyles.wrap} ${props.className}`}>
+      <div className={rangeStyles.inputWrap}>
+        <label
+          htmlFor={props.id}
+          className={`${inputStyles.label} ${rangeStyles.label}`}
+        >
+          {props.label}
+        </label>
+        <input
+          id={props.id}
+          className={rangeStyles.input}
+          value={value.toString()}
+          onChange={handleChange}
+          type="number"
+          min={props.min}
+          max={props.max}
+        />
+      </div>
+
+      <div className={rangeStyles.range}>
         <input
           type="range"
           value={value}

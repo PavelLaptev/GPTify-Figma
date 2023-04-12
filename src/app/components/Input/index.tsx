@@ -29,18 +29,11 @@ export const Input: React.FC<Props> = (props) => {
 
   return (
     <div className={`${styles.wrap} ${props.className}`}>
-      {props.label || props.helperText ? (
-        <div className={styles.text}>
-          {props.label && (
-            <label htmlFor={props.id} className={styles.label}>
-              {props.label}
-            </label>
-          )}
-          {props.helperText && (
-            <span className={"caption"}>{props.helperText}</span>
-          )}
-        </div>
-      ) : null}
+      {props.label && (
+        <label htmlFor={props.id} className={styles.label}>
+          {props.label}
+        </label>
+      )}
 
       <input
         id={props.id}
@@ -54,6 +47,10 @@ export const Input: React.FC<Props> = (props) => {
         onChange={handleChange}
         placeholder={props.placeholder}
       />
+
+      {props.helperText && (
+        <span className={"caption"}>{props.helperText}</span>
+      )}
     </div>
   );
 };

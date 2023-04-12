@@ -1,5 +1,13 @@
 import * as React from "react";
-import { Translate, Launch, Text, Dates, Currency, TextSandbox } from "./views";
+import {
+  Translate,
+  Launch,
+  Text,
+  Dates,
+  Currency,
+  TextCompose,
+  ToneOfVoice,
+} from "./views";
 import { useResize } from "./hooks";
 
 import styles from "./app.module.scss";
@@ -22,8 +30,10 @@ const App = () => {
         return <Dates apiKey={apiKey} setView={setView} />;
       case "currency":
         return <Currency apiKey={apiKey} setView={setView} />;
-      case "sandbox":
-        return <TextSandbox apiKey={apiKey} setView={setView} />;
+      case "text-compose":
+        return <TextCompose apiKey={apiKey} setView={setView} />;
+      case "tone-of-voice":
+        return <ToneOfVoice apiKey={apiKey} setView={setView} />;
       default:
         return <Launch setApiKey={setApiKey} setView={setView} />;
     }

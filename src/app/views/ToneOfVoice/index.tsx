@@ -1,9 +1,10 @@
 import React from "react";
-import { useOpenAICompletion } from "./../../hooks";
+import { useOpenAICompletion } from "../../hooks";
 import { getTextnodes } from "../../../utils";
+import { toneOptions } from "./toneOptions";
 import { prompt } from "./prompt";
 import {
-  Input,
+  Select,
   Button,
   Layout,
   HeaderWrap,
@@ -17,13 +18,13 @@ interface Props {
 }
 
 // Add parent class for sub-components
-export const Translate: React.FC<Props> = (props) => {
-  const [language, setLanguage] = React.useState("german");
+export const ToneOfVoice: React.FC<Props> = (props) => {
+  const [toneOfVoice, setToneOfVoice] = React.useState("formal");
 
   useOpenAICompletion({
     apiKey: props.apiKey,
-    prompt: prompt(language),
-    deps: [language],
+    prompt: prompt(toneOfVoice),
+    deps: [toneOfVoice],
   });
 
   return (
@@ -34,21 +35,18 @@ export const Translate: React.FC<Props> = (props) => {
             onClick={() => {
               props.setView("text");
             }}
-            label="Translate"
+            label="Tone of Voice"
           />
         </HeaderWrap>
-        <p className="caption">
-          Select text nodes or layers/frames/groups and translate them into
-          preferred language.
-        </p>
+        <p className="caption">Convert text into a different tone of voice.</p>
         <Layout gap="small">
-          <Input
+          <Select
             id="language"
-            type="text"
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
+            options={toneOptions}
+            value={toneOfVoice}
+            onChange={(e) => setToneOfVoice(e.target.value)}
           />
-          <Button onClick={getTextnodes} label="Translate selected" />
+          <Button onClick={getTextnodes} label="Convert selected" />
         </Layout>
       </Layout>
       <ViewGithubSource link="https://github.com/PavelLaptev/GPTify-Figma/blob/main/src/app/views/Translate/prompt.ts" />

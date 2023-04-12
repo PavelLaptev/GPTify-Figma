@@ -1,6 +1,7 @@
 import React from "react";
 import {
   Input,
+  Select,
   TextArea,
   RangeInput,
   Button,
@@ -16,11 +17,39 @@ interface Props {
 }
 
 // Add parent class for sub-components
-export const TextSandbox: React.FC<Props> = (props) => {
+export const TextCompose: React.FC<Props> = (props) => {
+  const modelOptions = {
+    "text-davinci-003": {
+      label: "Davinci",
+      value: "text-davinci-003",
+      description:
+        "The largest and most powerful model, capable of producing highly creative and coherent text in various styles and genres.",
+    },
+    "text-curie-001": {
+      label: "Curie",
+      value: "text-curie-001",
+      description:
+        "Optimized for natural language processing tasks like question answering and dialogue generation, capable of producing conversational-style text.",
+    },
+    "text-babbage-001": {
+      label: "Babbage",
+      value: "text-babbage-001",
+      description:
+        "Designed for general-purpose natural language processing tasks like language modeling and text classification.",
+    },
+    "text-ada-001": {
+      label: "Ada",
+      value: "text-ada-001",
+      description:
+        "Optimized for multitask learning, meaning it can perform well on a variety of different natural language processing tasks at once.",
+    },
+  };
+
   const [config, setConfig] = React.useState({
-    model: "text-davinci-003",
-    prompt: "Make this text funny: ${text}",
+    model: modelOptions["text-davinci-003"].value,
+    prompt: "",
     temperature: 0,
+    stopSequences: [],
     topP: 1,
     frequencyPenalty: 1,
     presencePenalty: 1,
@@ -29,7 +58,10 @@ export const TextSandbox: React.FC<Props> = (props) => {
     variantToUse: 0,
   } as modelSettingsType);
 
-  const handleChangeConfig = (key: string, value: string | number) => {
+  const handleChangeConfig = (
+    key: string,
+    value: string | number | string[]
+  ) => {
     setConfig({ ...config, [key]: value });
   };
 
@@ -118,9 +150,18 @@ export const TextSandbox: React.FC<Props> = (props) => {
         </p>
         <Divider />
         <Layout gap="medium">
-          <Input id="model" label="Model" value={config.model} disabled />
+          <Select
+            id="model"
+            label="Model"
+            options={Object.values(modelOptions)}
+            value={config.model}
+            helperText={modelOptions[config.model].description}
+            onChange={(e) => handleChangeConfig("model", e.target.value)}
+          />
           <TextArea
+            id="prompt"
             label="Prompt"
+            placeholder="Enter a prompt"
             helperText="Use ${text} if you want ot modify the text"
             value={config.prompt}
             onChange={(e) => handleChangeConfig("prompt", e.target.value)}
@@ -145,6 +186,16 @@ export const TextSandbox: React.FC<Props> = (props) => {
             value={config.maximumTokens}
             onChange={(value: number) =>
               handleChangeConfig("maximumTokens", value)
+            }
+          />
+          <Input
+            id="stopSequences"
+            label="Stop Sequences"
+            placeholder="Enter a stop sequence"
+            helperText="Enter a stop sequence"
+            value={config.stopSequences.join(",")}
+            onChange={(e) =>
+              handleChangeConfig("stopSequences", e.target.value.split(","))
             }
           />
           <RangeInput

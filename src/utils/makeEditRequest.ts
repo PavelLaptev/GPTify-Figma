@@ -1,4 +1,4 @@
-export const makeRequest = async (secret, input, instruction) => {
+export const makeEditRequest = async (secret, input, instruction) => {
   const response = await fetch("https://api.openai.com/v1/edits", {
     method: "POST",
     headers: {
@@ -6,16 +6,19 @@ export const makeRequest = async (secret, input, instruction) => {
       Authorization: `Bearer ${secret}`,
     },
     body: JSON.stringify({
-      model: "code-davinci-edit-001",
+      model: "text-davinci-edit-001",
       input,
       instruction,
+      temperature: 0,
     }),
   });
 
   const data = await response.json();
-  console.log("From OpenAI: ", data);
+  // console.log("From OpenAI: ", data);
+
   if (data.choices && data?.choices[0]?.text) {
     return data.choices[0].text;
   }
+
   throw new Error(data.error.message);
 };

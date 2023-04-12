@@ -17,13 +17,11 @@ interface Props {
 }
 
 export const Currency: React.FC<Props> = (props) => {
-  const [convertFormat, setConvertFormat] = React.useState(
-    "{converted sum} USD"
-  );
+  const [convertFormat, setConvertFormat] = React.useState("USD");
 
   useOpenAICompletion({
     apiKey: props.apiKey,
-    prompt: (nodeText: string) => prompt(convertFormat, nodeText),
+    prompt: prompt(convertFormat),
     deps: [convertFormat],
   });
 
@@ -46,12 +44,11 @@ export const Currency: React.FC<Props> = (props) => {
         <Layout gap="small">
           <Input
             id="currency-format"
-            label="Convert into format:"
             type="text"
             value={convertFormat}
             onChange={(e) => setConvertFormat(e.target.value)}
           />
-          <Button onClick={getTextnodes} label="Convert currency" />
+          <Button onClick={getTextnodes} label="Convert to currency" />
         </Layout>
 
         <p className="caption">

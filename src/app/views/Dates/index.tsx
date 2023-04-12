@@ -21,7 +21,7 @@ export const Dates: React.FC<Props> = (props) => {
 
   useOpenAICompletion({
     apiKey: props.apiKey,
-    prompt: (nodeText: string) => prompt(dateFormat, nodeText),
+    prompt: prompt(dateFormat),
     deps: [dateFormat],
   });
 
@@ -42,7 +42,6 @@ export const Dates: React.FC<Props> = (props) => {
         <Layout gap="small">
           <Input
             id="date-format"
-            label="Date format:"
             type="text"
             value={dateFormat}
             onChange={(e) => setDateFormat(e.target.value)}

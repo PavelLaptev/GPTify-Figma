@@ -1,6 +1,5 @@
 import React from "react";
-import { getTextFromGptOutputTag } from "./../../utils";
-const { Configuration, OpenAIApi } = require("openai");
+import { makeEditRequest } from "./../../utils";
 
 export interface UseOpenAICompletionProps {
   deps: any[];
@@ -10,12 +9,6 @@ export interface UseOpenAICompletionProps {
 
 export const useOpenAICompletion = (props: UseOpenAICompletionProps) => {
   React.useEffect(() => {
-    const configuration = new Configuration({
-      apiKey: process.env.OPENAI_API_KEY,
-    });
-
-    const openai = new OpenAIApi(configuration);
-
     window.onmessage = async (event) => {
       const msg = event.data.pluginMessage;
 
@@ -25,42 +18,10 @@ export const useOpenAICompletion = (props: UseOpenAICompletionProps) => {
         textObjects.forEach(async (textObject) => {
           console.log("props.prompt", props.prompt);
           try {
-            // const res = await fetch("https://api.openai.com/v1/completions", {
-            //   method: "POST",
-            //   headers: {
-            //     "content-type": "application/json",
-            //     authorization: `Bearer ${props.apiKey}`,
-            //   },
-            //   body: JSON.stringify({
-            //     model: "text-davinci-edit-001",
-            //     input: textObject.text,
-            //     instruction: props.prompt,
-            //     max_tokens: 150,
-            //     temperature: 0,
-            //     top_p: 1,
-            //     frequency_penalty: 1,
-            //     presence_penalty: 1,
-            //   }),
-            // });
-
-            const res = await fetch("https://api.openai.com/v1/edits", {
-              method: "POST",
-              headers: {
-                "content-type": "application/json",
-                authorization: `Bearer ${props.apiKey}`,
-              },
-              body: JSON.stringify({
-                model: "text-davinci-edit-001",
-                input: textObject.text,
-                instruction: props.prompt,
-              }),
-            });
-
-            const data = await res.json();
-
-            console.log("From OpenAI: ", data);
-            const resultTextNode = getTextFromGptOutputTag(
-              data.choices[0].text
+            const resultTextNode = await makeEditRequest(
+              props.apiKey,
+              textObject.text,
+              props.prompt
             );
 
             parent.postMessage(
