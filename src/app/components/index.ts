@@ -12,3 +12,4 @@ export { ListItem } from "./ListItem";
 export { List } from "./List";
 export { ViewGithubSource } from "./ViewGithubSource";
 export { Divider } from "./Divider";
+export { Checkbox } from "./Checkbox";

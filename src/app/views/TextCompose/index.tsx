@@ -94,6 +94,7 @@ export const TextCompose: React.FC<Props> = (props) => {
                 max_tokens: config.maximumTokens,
                 temperature: config.temperature,
                 top_p: config.topP,
+                stop: config.stopSequences,
                 frequency_penalty: config.frequencyPenalty,
                 presence_penalty: config.presencePenalty,
               }),
@@ -192,7 +193,7 @@ export const TextCompose: React.FC<Props> = (props) => {
             id="stopSequences"
             label="Stop Sequences"
             placeholder="Enter a stop sequence"
-            helperText="Enter a stop sequence"
+            helperText="Separate multiple stop sequences with a comma"
             value={config.stopSequences.join(",")}
             onChange={(e) =>
               handleChangeConfig("stopSequences", e.target.value.split(","))
@@ -248,9 +249,9 @@ export const TextCompose: React.FC<Props> = (props) => {
               handleChangeConfig("presencePenalty", value)
             }
           />
-
           <Button onClick={handleSanboxRequest} label="Generate" />
         </Layout>
+        <Divider />
       </Layout>
     </Layout>
   );
