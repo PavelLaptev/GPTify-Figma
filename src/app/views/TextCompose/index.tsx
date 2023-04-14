@@ -9,6 +9,7 @@ import {
   HeaderWrap,
   HeaderBack,
   Divider,
+  Checkbox,
 } from "../../components";
 
 interface Props {
@@ -16,34 +17,36 @@ interface Props {
   setView: (view: viewsType) => void;
 }
 
+const modelOptions = {
+  "text-davinci-003": {
+    label: "Davinci",
+    value: "text-davinci-003",
+    description:
+      "The largest and most powerful model, capable of producing highly creative and coherent text in various styles and genres.",
+  },
+  "text-curie-001": {
+    label: "Curie",
+    value: "text-curie-001",
+    description:
+      "Optimized for natural language processing tasks like question answering and dialogue generation, capable of producing conversational-style text.",
+  },
+  "text-babbage-001": {
+    label: "Babbage",
+    value: "text-babbage-001",
+    description:
+      "Designed for general-purpose natural language processing tasks like language modeling and text classification.",
+  },
+  "text-ada-001": {
+    label: "Ada",
+    value: "text-ada-001",
+    description:
+      "Optimized for multitask learning, meaning it can perform well on a variety of different natural language processing tasks at once.",
+  },
+};
+
 // Add parent class for sub-components
 export const TextCompose: React.FC<Props> = (props) => {
-  const modelOptions = {
-    "text-davinci-003": {
-      label: "Davinci",
-      value: "text-davinci-003",
-      description:
-        "The largest and most powerful model, capable of producing highly creative and coherent text in various styles and genres.",
-    },
-    "text-curie-001": {
-      label: "Curie",
-      value: "text-curie-001",
-      description:
-        "Optimized for natural language processing tasks like question answering and dialogue generation, capable of producing conversational-style text.",
-    },
-    "text-babbage-001": {
-      label: "Babbage",
-      value: "text-babbage-001",
-      description:
-        "Designed for general-purpose natural language processing tasks like language modeling and text classification.",
-    },
-    "text-ada-001": {
-      label: "Ada",
-      value: "text-ada-001",
-      description:
-        "Optimized for multitask learning, meaning it can perform well on a variety of different natural language processing tasks at once.",
-    },
-  };
+  const [showInConsole, setShowInConsole] = React.useState(false);
 
   const [config, setConfig] = React.useState({
     model: modelOptions["text-davinci-003"].value,
@@ -70,6 +73,7 @@ export const TextCompose: React.FC<Props> = (props) => {
   };
 
   const generatePromptString = (text: string, prompt: string) => {
+    // if prompt contains ${text} replace it with the text
     return prompt.replace("${text}", text);
   };
 
@@ -101,6 +105,12 @@ export const TextCompose: React.FC<Props> = (props) => {
             });
 
             const data = await res.json();
+
+            if (showInConsole) {
+              console.log("Prompt:", config.prompt);
+              console.log("Text:", textObject.text);
+              console.log("Response:", data);
+            }
 
             const selectedTextVariant = data.choices[0].text;
 
@@ -137,7 +147,8 @@ export const TextCompose: React.FC<Props> = (props) => {
           />
         </HeaderWrap>
         <p className="caption">
-          Welcome to the OpenAI API playground.
+          This is a sandbox for testing "Complete" models. You can generaete
+          completely new text based on a prompt.
           <br />
           You can experiment with the API using the{" "}
           <a
@@ -162,10 +173,22 @@ export const TextCompose: React.FC<Props> = (props) => {
           <TextArea
             id="prompt"
             label="Prompt"
-            placeholder="Enter a prompt"
-            helperText="Use ${text} if you want ot modify the text"
+            placeholder="Turn text into a haiku: ${text}"
+            helperText="Use ${text} string to insert layer text in prompt."
+            helperTextPosition="top"
             value={config.prompt}
             onChange={(e) => handleChangeConfig("prompt", e.target.value)}
+          />
+          <Input
+            id="stopSequences"
+            label="Stop Sequences"
+            placeholder="Haiku complete, Mic drop"
+            helperText="Separate multiple stop sequences with a comma"
+            helperTextPosition="top"
+            value={config.stopSequences.join(",")}
+            onChange={(e) =>
+              handleChangeConfig("stopSequences", e.target.value.split(","))
+            }
           />
           <RangeInput
             id="temperature"
@@ -187,16 +210,6 @@ export const TextCompose: React.FC<Props> = (props) => {
             value={config.maximumTokens}
             onChange={(value: number) =>
               handleChangeConfig("maximumTokens", value)
-            }
-          />
-          <Input
-            id="stopSequences"
-            label="Stop Sequences"
-            placeholder="Enter a stop sequence"
-            helperText="Separate multiple stop sequences with a comma"
-            value={config.stopSequences.join(",")}
-            onChange={(e) =>
-              handleChangeConfig("stopSequences", e.target.value.split(","))
             }
           />
           <RangeInput
@@ -252,6 +265,13 @@ export const TextCompose: React.FC<Props> = (props) => {
           <Button onClick={handleSanboxRequest} label="Generate" />
         </Layout>
         <Divider />
+        <Checkbox
+          id="show-in-console"
+          label="Show rusults in console"
+          helperText="Press ⌥⌘I to check the payload in the console."
+          checked={showInConsole}
+          onChange={(e) => setShowInConsole(e.target.checked)}
+        />
       </Layout>
     </Layout>
   );

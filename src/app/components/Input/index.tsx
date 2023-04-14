@@ -1,4 +1,6 @@
 import React from "react";
+import { Layout } from "../Layout";
+
 import styles from "../Input/styles.module.scss";
 
 interface Props {
@@ -7,6 +9,7 @@ interface Props {
   value?: string;
   label?: string;
   helperText?: string;
+  helperTextPosition?: "top" | "bottom";
   placeholder?: string;
   type?: "text" | "number";
   min?: number;
@@ -29,11 +32,16 @@ export const Input: React.FC<Props> = (props) => {
 
   return (
     <div className={`${styles.wrap} ${props.className}`}>
-      {props.label && (
-        <label htmlFor={props.id} className={styles.label}>
-          {props.label}
-        </label>
-      )}
+      <Layout gap="small">
+        {props.label && (
+          <label htmlFor={props.id} className={styles.label}>
+            {props.label}
+          </label>
+        )}
+        {props.helperText && props.helperTextPosition === "top" ? (
+          <span className={"caption"}>{props.helperText}</span>
+        ) : null}
+      </Layout>
 
       <input
         id={props.id}
@@ -48,9 +56,9 @@ export const Input: React.FC<Props> = (props) => {
         placeholder={props.placeholder}
       />
 
-      {props.helperText && (
+      {props.helperText && props.helperTextPosition === "bottom" ? (
         <span className={"caption"}>{props.helperText}</span>
-      )}
+      ) : null}
     </div>
   );
 };
@@ -60,4 +68,5 @@ Input.defaultProps = {
   value: "",
   label: "",
   type: "text",
+  helperTextPosition: "bottom",
 };

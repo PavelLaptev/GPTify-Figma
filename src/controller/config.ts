@@ -1,4 +1,4 @@
 export const frameSize = {
-  width: 360,
+  width: 340,
   height: 446,
 };

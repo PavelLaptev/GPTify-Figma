@@ -1,4 +1,6 @@
 import React from "react";
+import { Layout } from "../Layout";
+
 import styles from "./styles.module.scss";
 
 interface Props {
@@ -10,6 +12,7 @@ interface Props {
   helperText?: string;
   rows?: number;
   disabled?: boolean;
+  helperTextPosition?: "top" | "bottom";
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
@@ -28,9 +31,14 @@ export const TextArea: React.FC<Props> = (props) => {
       }`}
     >
       {props.label && (
-        <label htmlFor={props.id} className={styles.label}>
-          {props.label}
-        </label>
+        <Layout gap="small">
+          <label htmlFor={props.id} className={styles.label}>
+            {props.label}
+          </label>
+          {props.helperText && props.helperTextPosition === "top" ? (
+            <span className={"caption"}>{props.helperText}</span>
+          ) : null}
+        </Layout>
       )}
 
       <textarea
@@ -43,9 +51,9 @@ export const TextArea: React.FC<Props> = (props) => {
         rows={props.rows}
       />
 
-      {props.helperText && (
+      {props.helperText && props.helperTextPosition === "bottom" ? (
         <span className={"caption"}>{props.helperText}</span>
-      )}
+      ) : null}
     </div>
   );
 };
@@ -55,4 +63,5 @@ TextArea.defaultProps = {
   value: "",
   label: "",
   rows: 3,
+  helperTextPosition: "bottom",
 };
