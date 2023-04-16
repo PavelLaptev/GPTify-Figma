@@ -1,26 +1,23 @@
 import React from "react";
 import { Button, Layout, HeaderWrap, HeaderBack } from "../../components";
+import { useViewStore, useErrorStore } from "./../../store";
 
-interface Props {
-  apiKey: string;
-  setView: (view: viewsType) => void;
-}
+export const Error: React.FC = () => {
+  const { setView } = useViewStore();
+  const { error } = useErrorStore();
 
-export const Error: React.FC<Props> = (props) => {
   return (
     <Layout gap="null">
       <Layout gap="medium">
-        <HeaderWrap setView={props.setView}>
+        <HeaderWrap setView={setView}>
           <HeaderBack
             onClick={() => {
-              props.setView("text");
+              setView("text");
             }}
-            label="Dates"
+            label=""
           />
         </HeaderWrap>
-        <p className="caption">
-          Using this prompt, you can convert any dates to your preferred format.
-        </p>
+        <p className="caption">{error}</p>
         <Button
           tag="a"
           href="https://github.com/PavelLaptev/GPTify-Figma/issues"

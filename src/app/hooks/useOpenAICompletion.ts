@@ -49,7 +49,7 @@ export const useOpenAICompletion = (props: UseOpenAICompletionProps) => {
               "*"
             );
           } catch (error) {
-            console.log("Error generating prompts", error);
+            console.error("Error generating prompts", error);
             return false;
           }
         });

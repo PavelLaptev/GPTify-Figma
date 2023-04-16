@@ -12,14 +12,15 @@ import {
   Settings,
 } from "./views";
 import { useResize } from "./hooks";
+import { useViewStore, useApiKeysStore } from "./store";
 
 import styles from "./app.module.scss";
 
 const App = () => {
   const wrapRef = React.useRef<HTMLDivElement>(null);
-  const [apiKey, setApiKey] = React.useState("");
 
-  const [view, setView] = React.useState<viewsType>("loading");
+  const { view, setView } = useViewStore();
+  const { setApiKey } = useApiKeysStore();
 
   useResize(wrapRef, view);
 
@@ -30,7 +31,6 @@ const App = () => {
       const msg = event.data.pluginMessage;
 
       if (msg.type === "get-api-key") {
-        console.log("msg", msg);
         if (msg.apiKey) {
           setApiKey(msg.apiKey);
           setView("text");
@@ -44,24 +44,24 @@ const App = () => {
   const mountView = () => {
     switch (view) {
       case "launch":
-        return <Launch setApiKey={setApiKey} setView={setView} />;
+        return <Launch />;
 
       case "text":
-        return <Text setView={setView} />;
+        return <Text />;
       case "translate":
-        return <Translate apiKey={apiKey} setView={setView} />;
+        return <Translate />;
       case "dates":
-        return <Dates apiKey={apiKey} setView={setView} />;
+        return <Dates />;
       case "currency":
-        return <Currency apiKey={apiKey} setView={setView} />;
+        return <Currency />;
       case "text-compose":
-        return <TextCompose apiKey={apiKey} setView={setView} />;
+        return <TextCompose />;
       case "tone-of-voice":
-        return <ToneOfVoice apiKey={apiKey} setView={setView} />;
+        return <ToneOfVoice />;
       case "text-edits":
-        return <TextEdits apiKey={apiKey} setView={setView} />;
+        return <TextEdits />;
       case "settings":
-        return <Settings setView={setView} />;
+        return <Settings />;
 
       default:
         return <Loading />;

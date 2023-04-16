@@ -11,11 +11,7 @@ import {
   Divider,
   Checkbox,
 } from "../../components";
-
-interface Props {
-  apiKey: string;
-  setView: (view: viewsType) => void;
-}
+import { useViewStore, useApiKeysStore } from "./../../store";
 
 const modelOptions = {
   "text-davinci-003": {
@@ -45,7 +41,10 @@ const modelOptions = {
 };
 
 // Add parent class for sub-components
-export const TextCompose: React.FC<Props> = (props) => {
+export const TextCompose: React.FC = () => {
+  const { setView } = useViewStore();
+  const { apiKey } = useApiKeysStore();
+
   const [showInConsole, setShowInConsole] = React.useState(false);
   const [promptError, setPromptError] = React.useState("");
 
@@ -110,7 +109,7 @@ export const TextCompose: React.FC<Props> = (props) => {
               method: "POST",
               headers: {
                 "content-type": "application/json",
-                authorization: `Bearer ${props.apiKey}`,
+                authorization: `Bearer ${apiKey}`,
               },
               body: JSON.stringify(requestConfig),
             });
@@ -148,10 +147,10 @@ export const TextCompose: React.FC<Props> = (props) => {
   return (
     <Layout gap="null">
       <Layout gap="medium">
-        <HeaderWrap setView={props.setView}>
+        <HeaderWrap setView={setView}>
           <HeaderBack
             onClick={() => {
-              props.setView("text");
+              setView("text");
             }}
             label="Compose"
           />

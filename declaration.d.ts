@@ -17,6 +17,7 @@ type textObjectType = {
 };
 
 type viewsType =
+  | "error"
   | "loading"
   | "text"
   | "translate"

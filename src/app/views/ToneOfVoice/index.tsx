@@ -11,19 +11,18 @@ import {
   HeaderBack,
   ViewGithubSource,
 } from "../../components";
-
-interface Props {
-  apiKey: string;
-  setView: (view: viewsType) => void;
-}
+import { useViewStore, useApiKeysStore } from "./../../store";
 
 // Add parent class for sub-components
-export const ToneOfVoice: React.FC<Props> = (props) => {
+export const ToneOfVoice: React.FC = () => {
+  const { setView } = useViewStore();
+  const { apiKey } = useApiKeysStore();
+
   const [toneOfVoice, setToneOfVoice] = React.useState("formal");
 
   useOpenAICompletion({
     config: {
-      secret: props.apiKey,
+      secret: apiKey,
       instruction: prompt(toneOfVoice),
     },
   });
@@ -31,10 +30,10 @@ export const ToneOfVoice: React.FC<Props> = (props) => {
   return (
     <Layout gap="null">
       <Layout gap="medium">
-        <HeaderWrap setView={props.setView}>
+        <HeaderWrap setView={setView}>
           <HeaderBack
             onClick={() => {
-              props.setView("text");
+              setView("text");
             }}
             label="Tone of Voice"
           />

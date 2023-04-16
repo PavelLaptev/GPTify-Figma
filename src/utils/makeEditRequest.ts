@@ -1,3 +1,5 @@
+import { useErrorStore, useViewStore } from "./../app/store";
+
 interface MakeEditRequestProps {
   secret: string;
   model?: string;
@@ -8,6 +10,8 @@ interface MakeEditRequestProps {
 }
 
 export const makeEditRequest = async (prop: MakeEditRequestProps) => {
+  const { setView } = useViewStore();
+  const { setError } = useErrorStore();
   const stopSequences = prop.stopSequences || [];
 
   try {
@@ -37,6 +41,8 @@ export const makeEditRequest = async (prop: MakeEditRequestProps) => {
     throw new Error(data.error.message);
   } catch (error) {
     console.error("Request failed:", error);
+    setError(error.message);
+    setView("error");
     throw error;
   }
 };

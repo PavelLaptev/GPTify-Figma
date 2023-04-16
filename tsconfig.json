@@ -14,6 +14,7 @@
       "./node_modules/@types",
       "./node_modules/@figma",
       "./src/plugin.d.ts"
-    ]
+    ],
+    "baseUrl": "."
   }
 }
