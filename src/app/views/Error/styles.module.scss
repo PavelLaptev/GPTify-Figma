@@ -3,24 +3,16 @@
   background-color: var(--color-primary);
   border-radius: var(--input-button-radius);
 
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
-  padding: 0 12px;
   color: var(--color-white);
 
   outline: none;
   border: none;
-  text-decoration: none;
 
   transition: background 0.1s ease-in-out;
 
   &:hover {
     background-color: var(--color-secondary);
-  }
-
-  &:disabled {
-    pointer-events: none;
-    background-color: var(--color-primary);
-    opacity: 0.5;
   }
 }

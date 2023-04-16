@@ -12,7 +12,7 @@ export const useResize = (
     // get height of the first element
     const height = parentRef.current.children[0].clientHeight + paddings;
 
-    console.log("height", height);
+    // console.log("height", height);
 
     // send to figma controller
     parent.postMessage(

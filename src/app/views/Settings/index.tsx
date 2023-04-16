@@ -39,8 +39,9 @@ export const Settings: React.FC<Props> = (props) => {
             href="https://github.com/PavelLaptev/GPTify-Figma/issues"
             target="_blank"
           >
-            Github
+            Github issues
           </a>
+          .
         </p>
         <Divider />
         <section className={styles.links}>

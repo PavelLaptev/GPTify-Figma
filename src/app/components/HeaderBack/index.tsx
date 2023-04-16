@@ -3,7 +3,7 @@ import { Icon } from "..";
 import styles from "./styles.module.scss";
 
 interface Props {
-  label: string;
+  label?: string;
   onClick: () => void;
 }
 
@@ -13,7 +13,7 @@ export const HeaderBack: React.FC<Props> = (props) => {
       <div className={styles.icon}>
         <Icon name="arrow-left" />
       </div>
-      <h2 className={styles.label}>{props.label}</h2>
+      {props.label && <h2 className={styles.label}>{props.label}</h2>}
     </section>
   );
 };
