@@ -7,25 +7,26 @@ import {
   Divider,
   Icon,
 } from "../../components";
-import { useViewStore } from "./../../store";
 
 import styles from "./styles.module.scss";
 
-export const Settings: React.FC = () => {
-  const { setView } = useViewStore();
+interface Props {
+  setView: (view: viewsType) => void;
+}
 
+export const Settings: React.FC<Props> = (props) => {
   const handleResetApi = () => {
     parent.postMessage({ pluginMessage: { type: "clear-api-key" } }, "*");
-    setView("launch");
+    props.setView("launch");
   };
 
   return (
     <Layout gap="null">
       <Layout gap="medium">
-        <HeaderWrap setView={setView} showSettings={false}>
+        <HeaderWrap setView={props.setView} showSettings={false}>
           <HeaderBack
             onClick={() => {
-              setView("text");
+              props.setView("text");
             }}
             label="Settings"
           />

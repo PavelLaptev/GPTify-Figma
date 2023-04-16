@@ -51,3 +51,9 @@ type editsModelSettingsType = {
   stopSequences: string[];
   topP: number;
 };
+
+interface TextEditsViewProps {
+  apiKey: string;
+  setView: (view: viewsType) => void;
+  setErrorMessage: (message: string) => void;
+}

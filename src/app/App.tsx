@@ -10,17 +10,18 @@ import {
   TextCompose,
   TextEdits,
   Settings,
+  Error,
 } from "./views";
 import { useResize } from "./hooks";
-import { useViewStore, useApiKeysStore } from "./store";
 
 import styles from "./app.module.scss";
 
 const App = () => {
   const wrapRef = React.useRef<HTMLDivElement>(null);
 
-  const { view, setView } = useViewStore();
-  const { setApiKey } = useApiKeysStore();
+  const [apiKey, setApiKey] = React.useState("");
+  const [view, setView] = React.useState<viewsType>("loading");
+  const [errorMessage, setErrorMessage] = React.useState("");
 
   useResize(wrapRef, view);
 
@@ -31,6 +32,7 @@ const App = () => {
       const msg = event.data.pluginMessage;
 
       if (msg.type === "get-api-key") {
+        console.log("msg", msg);
         if (msg.apiKey) {
           setApiKey(msg.apiKey);
           setView("text");
@@ -41,27 +43,47 @@ const App = () => {
     };
   }, []);
 
+  React.useEffect(() => {
+    if (errorMessage !== "") {
+      setView("error");
+    }
+  }, [errorMessage]);
+
+  const editTextProps = {
+    apiKey,
+    setView,
+    setErrorMessage,
+  };
+
   const mountView = () => {
     switch (view) {
       case "launch":
-        return <Launch />;
+        return <Launch setApiKey={setApiKey} setView={setView} />;
 
       case "text":
-        return <Text />;
+        return <Text setView={setView} />;
       case "translate":
-        return <Translate />;
+        return <Translate {...editTextProps} />;
       case "dates":
-        return <Dates />;
+        return <Dates {...editTextProps} />;
       case "currency":
-        return <Currency />;
+        return <Currency {...editTextProps} />;
       case "text-compose":
-        return <TextCompose />;
+        return <TextCompose {...editTextProps} />;
       case "tone-of-voice":
-        return <ToneOfVoice />;
+        return <ToneOfVoice {...editTextProps} />;
       case "text-edits":
-        return <TextEdits />;
+        return <TextEdits {...editTextProps} />;
       case "settings":
-        return <Settings />;
+        return <Settings setView={setView} />;
+      case "error":
+        return (
+          <Error
+            errorMessage={errorMessage}
+            setView={setView}
+            setErrorMessage={setErrorMessage}
+          />
+        );
 
       default:
         return <Loading />;

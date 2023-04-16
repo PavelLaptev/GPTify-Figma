@@ -1,17 +1,17 @@
 import React from "react";
 import { Input, Button, Layout } from "../../components";
-import { useViewStore, useApiKeysStore } from "./../../store";
-
 import styles from "./styles.module.scss";
 
 import coverImg from "../../assets/cover.webp";
 
 const apiENVKey = process.env.REACT_APP_OPENAI_API_KEY;
 
-export const Launch: React.FC = () => {
-  const { setView } = useViewStore();
-  const { setApiKey } = useApiKeysStore();
+interface Props {
+  setApiKey: (apiKey: string) => void;
+  setView: (view: viewsType) => void;
+}
 
+export const Launch: React.FC<Props> = (props) => {
   const [inputValue, setInputValue] = React.useState(apiENVKey);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,8 +20,8 @@ export const Launch: React.FC = () => {
 
   const handleApply = () => {
     if (inputValue) {
-      setView("text");
-      setApiKey(inputValue);
+      props.setView("text");
+      props.setApiKey(inputValue);
 
       parent.postMessage(
         { pluginMessage: { type: "set-api-key", apiKey: inputValue } },

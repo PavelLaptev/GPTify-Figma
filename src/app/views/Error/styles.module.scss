@@ -1,18 +1,15 @@
-.button {
-  height: var(--input-button-height);
-  background-color: var(--color-primary);
-  border-radius: var(--input-button-radius);
+.errorMessage {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border: 2px solid var(--color-error);
+  gap: 16px;
+}
 
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--color-white);
-
-  outline: none;
-  border: none;
-
-  transition: background 0.1s ease-in-out;
-
-  &:hover {
-    background-color: var(--color-secondary);
-  }
+.errorText {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-error);
+  word-break: break-all;
+  margin: 0;
 }

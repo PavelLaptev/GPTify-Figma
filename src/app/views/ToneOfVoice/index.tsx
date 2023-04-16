@@ -11,29 +11,26 @@ import {
   HeaderBack,
   ViewGithubSource,
 } from "../../components";
-import { useViewStore, useApiKeysStore } from "./../../store";
 
 // Add parent class for sub-components
-export const ToneOfVoice: React.FC = () => {
-  const { setView } = useViewStore();
-  const { apiKey } = useApiKeysStore();
-
+export const ToneOfVoice: React.FC<TextEditsViewProps> = (props) => {
   const [toneOfVoice, setToneOfVoice] = React.useState("formal");
 
   useOpenAICompletion({
     config: {
-      secret: apiKey,
+      secret: props.apiKey,
       instruction: prompt(toneOfVoice),
     },
+    setErrorMessage: props.setErrorMessage,
   });
 
   return (
     <Layout gap="null">
       <Layout gap="medium">
-        <HeaderWrap setView={setView}>
+        <HeaderWrap setView={props.setView}>
           <HeaderBack
             onClick={() => {
-              setView("text");
+              props.setView("text");
             }}
             label="Tone of Voice"
           />

@@ -1,4 +1,7 @@
 .button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: var(--input-button-height);
   background-color: var(--color-primary);
   border-radius: var(--input-button-radius);

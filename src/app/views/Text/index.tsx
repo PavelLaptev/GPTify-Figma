@@ -1,14 +1,15 @@
 import React from "react";
 import { Layout, HeaderWrap, HeaderTabs, List } from "../../components";
-import { useViewStore } from "./../../store";
 
-export const Text: React.FC = () => {
-  const { setView } = useViewStore();
+interface Props {
+  setView: (view: viewsType) => void;
+}
 
+export const Text: React.FC<Props> = (props) => {
   return (
     <Layout gap="large">
-      <HeaderWrap setView={setView}>
-        <HeaderTabs currentTab="text" setView={setView} />
+      <HeaderWrap setView={props.setView}>
+        <HeaderTabs currentTab="text" setView={props.setView} />
       </HeaderWrap>
       <Layout gap="medium">
         <List
@@ -17,25 +18,25 @@ export const Text: React.FC = () => {
             {
               label: "Translate",
               onClick: () => {
-                setView("translate");
+                props.setView("translate");
               },
             },
             {
               label: "Currency",
               onClick: () => {
-                setView("currency");
+                props.setView("currency");
               },
             },
             {
               label: "Dates",
               onClick: () => {
-                setView("dates");
+                props.setView("dates");
               },
             },
             {
               label: "Tone of Voice",
               onClick: () => {
-                setView("tone-of-voice");
+                props.setView("tone-of-voice");
               },
             },
           ]}
@@ -46,13 +47,13 @@ export const Text: React.FC = () => {
             {
               label: "Text edits",
               onClick: () => {
-                setView("text-edits");
+                props.setView("text-edits");
               },
             },
             {
               label: "Compose",
               onClick: () => {
-                setView("text-compose");
+                props.setView("text-compose");
               },
             },
           ]}

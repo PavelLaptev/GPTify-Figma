@@ -10,28 +10,25 @@ import {
   HeaderBack,
   ViewGithubSource,
 } from "../../components";
-import { useViewStore, useApiKeysStore } from "./../../store";
 
-export const Currency: React.FC = () => {
-  const { setView } = useViewStore();
-  const { apiKey } = useApiKeysStore();
-
+export const Currency: React.FC<TextEditsViewProps> = (props) => {
   const [convertFormat, setConvertFormat] = React.useState("USD");
 
   useOpenAICompletion({
     config: {
-      secret: apiKey,
+      secret: props.apiKey,
       instruction: prompt(convertFormat),
     },
+    setErrorMessage: props.setErrorMessage,
   });
 
   return (
     <Layout gap="null">
       <Layout gap="medium">
-        <HeaderWrap setView={setView}>
+        <HeaderWrap setView={props.setView}>
           <HeaderBack
             onClick={() => {
-              setView("text");
+              props.setView("text");
             }}
             label="Currency"
           />

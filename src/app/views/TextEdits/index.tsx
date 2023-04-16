@@ -13,7 +13,6 @@ import {
   Divider,
   Checkbox,
 } from "../../components";
-import { useViewStore, useApiKeysStore } from "./../../store";
 
 const modelOptions = {
   "text-davinci-edit-001": {
@@ -31,10 +30,7 @@ const modelOptions = {
 };
 
 // Add parent class for sub-components
-export const TextEdits: React.FC = () => {
-  const { setView } = useViewStore();
-  const { apiKey } = useApiKeysStore();
-
+export const TextEdits: React.FC<TextEditsViewProps> = (props) => {
   const [showInConsole, setShowInConsole] = React.useState(false);
   const [instructionError, setInstructionError] = React.useState("");
 
@@ -64,18 +60,19 @@ export const TextEdits: React.FC = () => {
 
   useOpenAICompletion({
     config: {
-      secret: apiKey,
+      secret: props.apiKey,
       instruction: config.instruction,
     },
+    setErrorMessage: props.setErrorMessage,
   });
 
   return (
     <Layout gap="null">
       <Layout gap="medium">
-        <HeaderWrap setView={setView}>
+        <HeaderWrap setView={props.setView}>
           <HeaderBack
             onClick={() => {
-              setView("text");
+              props.setView("text");
             }}
             label="Text edits"
           />

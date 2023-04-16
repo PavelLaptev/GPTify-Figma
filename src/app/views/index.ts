@@ -11,3 +11,5 @@ export { TextCompose } from "./TextCompose";
 export { TextEdits } from "./TextEdits";
 
 export { Settings } from "./Settings";
+
+export { Error } from "./Error";

@@ -1,7 +1,6 @@
-import { useErrorStore, useViewStore } from "./../app/store";
-
 interface MakeEditRequestProps {
   secret: string;
+  setErrorMessage: (message: string) => void;
   model?: string;
   input: string;
   instruction: string;
@@ -10,8 +9,6 @@ interface MakeEditRequestProps {
 }
 
 export const makeEditRequest = async (prop: MakeEditRequestProps) => {
-  const { setView } = useViewStore();
-  const { setError } = useErrorStore();
   const stopSequences = prop.stopSequences || [];
 
   try {
@@ -19,7 +16,7 @@ export const makeEditRequest = async (prop: MakeEditRequestProps) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${prop.secret}`,
+        Authorization: `Bearer ${prop.secret}qwe`,
       },
       body: JSON.stringify({
         model: prop.model || "text-davinci-edit-001",
@@ -41,8 +38,7 @@ export const makeEditRequest = async (prop: MakeEditRequestProps) => {
     throw new Error(data.error.message);
   } catch (error) {
     console.error("Request failed:", error);
-    setError(error.message);
-    setView("error");
+    prop.setErrorMessage(error.message);
     throw error;
   }
 };

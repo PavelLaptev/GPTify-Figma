@@ -10,6 +10,7 @@ export interface UseOpenAICompletionProps {
     temperature?: number;
     stopSequences?: string[];
   };
+  setErrorMessage: (message: string) => void;
 }
 
 export const useOpenAICompletion = (props: UseOpenAICompletionProps) => {
@@ -21,37 +22,33 @@ export const useOpenAICompletion = (props: UseOpenAICompletionProps) => {
         const textObjects = msg.textObjects;
 
         textObjects.forEach(async (textObject) => {
-          try {
-            const resultTextNode = await makeEditRequest({
-              model: props.config.model,
-              secret: props.config.secret,
-              input: textObject.text,
-              instruction: props.config.instruction,
-              temperature: props.config.temperature,
-              stopSequences: props.config.stopSequences,
-            });
+          const resultTextNode = await makeEditRequest({
+            model: props.config.model,
+            secret: props.config.secret,
+            input: textObject.text,
+            instruction: props.config.instruction,
+            temperature: props.config.temperature,
+            stopSequences: props.config.stopSequences,
+            setErrorMessage: props.setErrorMessage,
+          });
 
-            if (props.showInConsole) {
-              console.log("resultTextNode", resultTextNode);
-              console.log("config", props.config);
-            }
+          if (props.showInConsole) {
+            console.log("resultTextNode", resultTextNode);
+            console.log("config", props.config);
+          }
 
-            parent.postMessage(
-              {
-                pluginMessage: {
-                  type: "set-textnode",
-                  textObjectType: {
-                    id: textObject.id,
-                    text: resultTextNode,
-                  },
+          parent.postMessage(
+            {
+              pluginMessage: {
+                type: "set-textnode",
+                textObjectType: {
+                  id: textObject.id,
+                  text: resultTextNode,
                 },
               },
-              "*"
-            );
-          } catch (error) {
-            console.error("Error generating prompts", error);
-            return false;
-          }
+            },
+            "*"
+          );
         });
       }
     };

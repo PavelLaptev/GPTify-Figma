@@ -10,28 +10,25 @@ import {
   HeaderBack,
   ViewGithubSource,
 } from "../../components";
-import { useViewStore, useApiKeysStore } from "./../../store";
 
-export const Dates: React.FC = () => {
-  const { setView } = useViewStore();
-  const { apiKey } = useApiKeysStore();
-
+export const Dates: React.FC<TextEditsViewProps> = (props) => {
   const [dateFormat, setDateFormat] = React.useState("DD/MM/YYYY");
 
   useOpenAICompletion({
     config: {
-      secret: apiKey,
+      secret: props.apiKey,
       instruction: prompt(dateFormat),
     },
+    setErrorMessage: props.setErrorMessage,
   });
 
   return (
     <Layout gap="null">
       <Layout gap="medium">
-        <HeaderWrap setView={setView}>
+        <HeaderWrap setView={props.setView}>
           <HeaderBack
             onClick={() => {
-              setView("text");
+              props.setView("text");
             }}
             label="Dates"
           />

@@ -10,30 +10,26 @@ import {
   HeaderBack,
   ViewGithubSource,
 } from "../../components";
-import { useViewStore, useApiKeysStore } from "./../../store";
 
 // Add parent class for sub-components
-export const Translate: React.FC = () => {
-  const { setView } = useViewStore();
-  const { apiKey } = useApiKeysStore();
+export const Translate: React.FC<TextEditsViewProps> = (props) => {
   const [language, setLanguage] = React.useState("german");
-
-  console.log("apiKey", apiKey);
 
   useOpenAICompletion({
     config: {
-      secret: apiKey,
+      secret: props.apiKey,
       instruction: prompt(language),
     },
+    setErrorMessage: props.setErrorMessage,
   });
 
   return (
     <Layout gap="null">
       <Layout gap="medium">
-        <HeaderWrap setView={setView}>
+        <HeaderWrap setView={props.setView}>
           <HeaderBack
             onClick={() => {
-              setView("text");
+              props.setView("text");
             }}
             label="Translate"
           />
