@@ -22,9 +22,10 @@ export const ToneOfVoice: React.FC<Props> = (props) => {
   const [toneOfVoice, setToneOfVoice] = React.useState("formal");
 
   useOpenAICompletion({
-    apiKey: props.apiKey,
-    prompt: prompt(toneOfVoice),
-    deps: [toneOfVoice],
+    config: {
+      secret: props.apiKey,
+      instruction: prompt(toneOfVoice),
+    },
   });
 
   return (

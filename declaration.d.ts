@@ -17,6 +17,7 @@ type textObjectType = {
 };
 
 type viewsType =
+  | "loading"
   | "text"
   | "translate"
   | "launch"
@@ -28,7 +29,7 @@ type viewsType =
   | "text-edits"
   | "text-compose";
 
-type modelSettingsType = {
+type composeModelSettingsType = {
   model: string;
   prompt: string;
   temperature: number;
@@ -39,4 +40,13 @@ type modelSettingsType = {
   maximumTokens: number;
   n: number;
   variantToUse: number;
+};
+
+type editsModelSettingsType = {
+  model: string;
+  input: string;
+  instruction: string;
+  temperature: number;
+  stopSequences: string[];
+  topP: number;
 };

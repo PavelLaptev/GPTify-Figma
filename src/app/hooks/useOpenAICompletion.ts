@@ -2,9 +2,14 @@ import React from "react";
 import { makeEditRequest } from "./../../utils";
 
 export interface UseOpenAICompletionProps {
-  deps: any[];
-  apiKey: string;
-  prompt: string;
+  showInConsole?: boolean;
+  config?: {
+    secret: string;
+    instruction: string;
+    model?: string;
+    temperature?: number;
+    stopSequences?: string[];
+  };
 }
 
 export const useOpenAICompletion = (props: UseOpenAICompletionProps) => {
@@ -16,13 +21,20 @@ export const useOpenAICompletion = (props: UseOpenAICompletionProps) => {
         const textObjects = msg.textObjects;
 
         textObjects.forEach(async (textObject) => {
-          console.log("props.prompt", props.prompt);
           try {
-            const resultTextNode = await makeEditRequest(
-              props.apiKey,
-              textObject.text,
-              props.prompt
-            );
+            const resultTextNode = await makeEditRequest({
+              model: props.config.model,
+              secret: props.config.secret,
+              input: textObject.text,
+              instruction: props.config.instruction,
+              temperature: props.config.temperature,
+              stopSequences: props.config.stopSequences,
+            });
+
+            if (props.showInConsole) {
+              console.log("resultTextNode", resultTextNode);
+              console.log("config", props.config);
+            }
 
             parent.postMessage(
               {
@@ -43,5 +55,5 @@ export const useOpenAICompletion = (props: UseOpenAICompletionProps) => {
         });
       }
     };
-  }, [props.deps]);
+  }, [props.config, props.showInConsole]);
 };

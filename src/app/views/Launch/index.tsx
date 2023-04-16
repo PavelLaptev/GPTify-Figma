@@ -22,6 +22,11 @@ export const Launch: React.FC<Props> = (props) => {
     if (inputValue) {
       props.setView("text");
       props.setApiKey(inputValue);
+
+      parent.postMessage(
+        { pluginMessage: { type: "set-api-key", apiKey: inputValue } },
+        "*"
+      );
     }
   };
 

@@ -52,3 +52,13 @@
     background: var(--color-grey-100-transparent);
   }
 }
+
+.error {
+  .textarea {
+    border: 2px solid var(--color-error);
+  }
+
+  .errorText {
+    color: var(--color-error);
+  }
+}

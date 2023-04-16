@@ -1,45 +1,29 @@
+import { frameSize } from "./config";
 import { handleResize } from "./handleResize";
+import { handleStorage } from "./handleStorage";
 
-import { removeLeadingNewLines } from "./../utils";
+import { removeLeadingNewLines, findAllTextNodes } from "./../utils";
 
 // clear console on reload
 console.clear();
 
+// show plugin UI
+figma.showUI(__html__, frameSize);
+
 figma.skipInvisibleInstanceChildren = true;
 
-// default plugin size
-const pluginFrameSize = {
-  width: 360,
-  height: 370,
-};
-
-// show plugin UI
-figma.showUI(__html__, pluginFrameSize);
-
-const findAllTextNodes = (nodes: readonly SceneNode[]): TextNode[] => {
-  const textNodes: TextNode[] = [];
-
-  const findTextNodes = (nodes: readonly SceneNode[]) => {
-    for (const node of nodes) {
-      if (node.type === "TEXT") {
-        textNodes.push(node as TextNode);
-      } else if ("children" in node) {
-        findTextNodes(node.children);
-      }
-    }
-  };
-
-  findTextNodes(nodes);
-  return textNodes;
-};
+// clear stoorage
+// figma.clientStorage.setAsync("gptify-api-key", undefined);
 
 // listen for messages from the UI
 figma.ui.onmessage = async (msg) => {
   handleResize(msg);
+  handleStorage(msg);
 
   const selection = figma.currentPage.selection;
   const isSomethingSelected = selection.length > 0;
 
+  // post all text nodes to the UI
   if (msg.type === "get-textnodes") {
     if (isSomethingSelected) {
       const textNodes = findAllTextNodes(selection);
@@ -63,22 +47,11 @@ figma.ui.onmessage = async (msg) => {
 
   if (msg.type === "set-textnode") {
     const textObject = msg.textObjectType as textObjectType;
-
     const node = figma.getNodeById(textObject.id) as TextNode;
 
     // replace text
     await figma.loadFontAsync(node.fontName as FontName);
     node.characters = removeLeadingNewLines(textObject.text);
-
-    // console.log(textObjectTypes);
-
-    // textObjectTypes.forEach(async (textObjectType) => {
-    //   const node = figma.getNodeById(textObjectType.id) as TextNode;
-
-    //   // replace text
-    //   await figma.loadFontAsync(node.fontName as FontName);
-    //   node.characters = textObjectType.text;
-    // });
 
     figma.notify("Text updated");
   }

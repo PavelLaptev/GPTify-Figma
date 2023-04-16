@@ -21,9 +21,10 @@ export const Translate: React.FC<Props> = (props) => {
   const [language, setLanguage] = React.useState("german");
 
   useOpenAICompletion({
-    apiKey: props.apiKey,
-    prompt: prompt(language),
-    deps: [language],
+    config: {
+      secret: props.apiKey,
+      instruction: prompt(language),
+    },
   });
 
   return (

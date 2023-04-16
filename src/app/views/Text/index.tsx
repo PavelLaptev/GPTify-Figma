@@ -45,6 +45,12 @@ export const Text: React.FC<Props> = (props) => {
           label="Sandbox"
           options={[
             {
+              label: "Text edits",
+              onClick: () => {
+                props.setView("text-edits");
+              },
+            },
+            {
               label: "Compose",
               onClick: () => {
                 props.setView("text-compose");

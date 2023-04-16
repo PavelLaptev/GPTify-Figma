@@ -20,9 +20,10 @@ export const Dates: React.FC<Props> = (props) => {
   const [dateFormat, setDateFormat] = React.useState("DD/MM/YYYY");
 
   useOpenAICompletion({
-    apiKey: props.apiKey,
-    prompt: prompt(dateFormat),
-    deps: [dateFormat],
+    config: {
+      secret: props.apiKey,
+      instruction: prompt(dateFormat),
+    },
   });
 
   return (

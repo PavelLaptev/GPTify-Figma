@@ -1,24 +1,42 @@
-export const makeEditRequest = async (secret, input, instruction) => {
-  const response = await fetch("https://api.openai.com/v1/edits", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${secret}`,
-    },
-    body: JSON.stringify({
-      model: "text-davinci-edit-001",
-      input,
-      instruction,
-      temperature: 0,
-    }),
-  });
+interface MakeEditRequestProps {
+  secret: string;
+  model?: string;
+  input: string;
+  instruction: string;
+  temperature?: number;
+  stopSequences?: string[];
+}
 
-  const data = await response.json();
-  // console.log("From OpenAI: ", data);
+export const makeEditRequest = async (prop: MakeEditRequestProps) => {
+  const stopSequences = prop.stopSequences || [];
 
-  if (data.choices && data?.choices[0]?.text) {
-    return data.choices[0].text;
+  try {
+    const response = await fetch("https://api.openai.com/v1/edits", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${prop.secret}`,
+      },
+      body: JSON.stringify({
+        model: prop.model || "text-davinci-edit-001",
+        input: prop.input,
+        instruction: prop.instruction,
+        temperature: prop.temperature || 0.5,
+        ...((stopSequences.length > 0 && {
+          stop: stopSequences,
+        }) as {}),
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.choices && data?.choices[0]?.text) {
+      return data.choices[0].text;
+    }
+
+    throw new Error(data.error.message);
+  } catch (error) {
+    console.error("Request failed:", error);
+    throw error;
   }
-
-  throw new Error(data.error.message);
 };

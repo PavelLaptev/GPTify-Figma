@@ -20,9 +20,10 @@ export const Currency: React.FC<Props> = (props) => {
   const [convertFormat, setConvertFormat] = React.useState("USD");
 
   useOpenAICompletion({
-    apiKey: props.apiKey,
-    prompt: prompt(convertFormat),
-    deps: [convertFormat],
+    config: {
+      secret: props.apiKey,
+      instruction: prompt(convertFormat),
+    },
   });
 
   return (

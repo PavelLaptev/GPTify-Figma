@@ -13,6 +13,7 @@ interface Props {
   rows?: number;
   disabled?: boolean;
   helperTextPosition?: "top" | "bottom";
+  errorMessage?: string;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
@@ -28,7 +29,7 @@ export const TextArea: React.FC<Props> = (props) => {
     <div
       className={`${styles.wrap} ${props.className} ${
         props.disabled ? styles.disabled : ""
-      }`}
+      } ${props.errorMessage !== "" ? styles.error : ""}`}
     >
       {props.label && (
         <Layout gap="small">
@@ -51,9 +52,14 @@ export const TextArea: React.FC<Props> = (props) => {
         rows={props.rows}
       />
 
-      {props.helperText && props.helperTextPosition === "bottom" ? (
-        <span className={"caption"}>{props.helperText}</span>
-      ) : null}
+      <Layout gap="small">
+        {props.helperText && props.helperTextPosition === "bottom" ? (
+          <span className="caption">{props.helperText}</span>
+        ) : null}
+        {props.errorMessage !== "" ? (
+          <span className={styles.errorText}>{props.errorMessage}</span>
+        ) : null}
+      </Layout>
     </div>
   );
 };
@@ -64,4 +70,5 @@ TextArea.defaultProps = {
   label: "",
   rows: 3,
   helperTextPosition: "bottom",
+  errorMessage: "",
 };

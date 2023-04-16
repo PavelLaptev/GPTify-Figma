@@ -1,0 +1,35 @@
+.links {
+  display: flex;
+  flex: 1;
+  gap: 16px;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+
+  span {
+    color: var(--color-primary);
+    font-size: 14px;
+    font-weight: 700;
+    transition: all 0.1s ease-in-out;
+  }
+
+  &:hover {
+    span {
+      color: var(--color-secondary);
+    }
+
+    .icon {
+      svg {
+        fill: var(--color-secondary);
+      }
+    }
+  }
+}
+
+.icon {
+  transition: all 0.1s ease-in-out;
+}

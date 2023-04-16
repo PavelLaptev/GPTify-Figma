@@ -47,6 +47,7 @@ const modelOptions = {
 // Add parent class for sub-components
 export const TextCompose: React.FC<Props> = (props) => {
   const [showInConsole, setShowInConsole] = React.useState(false);
+  const [promptError, setPromptError] = React.useState("");
 
   const [config, setConfig] = React.useState({
     model: modelOptions["text-davinci-003"].value,
@@ -58,8 +59,8 @@ export const TextCompose: React.FC<Props> = (props) => {
     presencePenalty: 1,
     maximumTokens: 150,
     n: 1,
-    variantToUse: 0,
-  } as modelSettingsType);
+    variantToUse: 1,
+  } as composeModelSettingsType);
 
   const handleChangeConfig = (
     key: string,
@@ -69,6 +70,11 @@ export const TextCompose: React.FC<Props> = (props) => {
   };
 
   const handleSanboxRequest = async () => {
+    if (config.prompt === "") {
+      setPromptError("Prompt cannot be empty");
+      return;
+    }
+
     parent.postMessage({ pluginMessage: { type: "get-textnodes" } }, "*");
   };
 
@@ -85,6 +91,20 @@ export const TextCompose: React.FC<Props> = (props) => {
         const textObjects = msg.textObjects;
 
         textObjects.forEach(async (textObject) => {
+          const requestConfig = {
+            model: config.model,
+            prompt: generatePromptString(textObject.text, config.prompt),
+            max_tokens: config.maximumTokens,
+            temperature: config.temperature,
+            top_p: config.topP,
+            n: config.n,
+            frequency_penalty: config.frequencyPenalty,
+            presence_penalty: config.presencePenalty,
+            ...((config.stopSequences.length > 0 && {
+              stop: config.stopSequences,
+            }) as {}),
+          };
+
           try {
             const res = await fetch("https://api.openai.com/v1/completions", {
               method: "POST",
@@ -92,24 +112,14 @@ export const TextCompose: React.FC<Props> = (props) => {
                 "content-type": "application/json",
                 authorization: `Bearer ${props.apiKey}`,
               },
-              body: JSON.stringify({
-                model: config.model,
-                prompt: generatePromptString(textObject.text, config.prompt),
-                max_tokens: config.maximumTokens,
-                temperature: config.temperature,
-                top_p: config.topP,
-                stop: config.stopSequences,
-                frequency_penalty: config.frequencyPenalty,
-                presence_penalty: config.presencePenalty,
-              }),
+              body: JSON.stringify(requestConfig),
             });
 
             const data = await res.json();
 
             if (showInConsole) {
-              console.log("Prompt:", config.prompt);
-              console.log("Text:", textObject.text);
-              console.log("Response:", data);
+              console.log("Request config:", requestConfig);
+              console.log("Response data:", data);
             }
 
             const selectedTextVariant = data.choices[0].text;
@@ -133,7 +143,7 @@ export const TextCompose: React.FC<Props> = (props) => {
         });
       }
     };
-  }, [config]);
+  }, [config, showInConsole]);
 
   return (
     <Layout gap="null">
@@ -143,14 +153,13 @@ export const TextCompose: React.FC<Props> = (props) => {
             onClick={() => {
               props.setView("text");
             }}
-            label="Sandbox"
+            label="Compose"
           />
         </HeaderWrap>
         <p className="caption">
           This is a sandbox for testing "Complete" models. You can generaete
-          completely new text based on a prompt.
-          <br />
-          You can experiment with the API using the{" "}
+          completely new text based on a prompt. You can experiment with the API
+          using the{" "}
           <a
             href="https://beta.openai.com/docs/api-reference/completions/create"
             target="_blank"
@@ -177,7 +186,11 @@ export const TextCompose: React.FC<Props> = (props) => {
             helperText="Use ${text} string to insert layer text in prompt."
             helperTextPosition="top"
             value={config.prompt}
-            onChange={(e) => handleChangeConfig("prompt", e.target.value)}
+            errorMessage={promptError}
+            onChange={(e) => {
+              setPromptError("");
+              handleChangeConfig("prompt", e.target.value);
+            }}
           />
           <Input
             id="stopSequences"
@@ -225,11 +238,11 @@ export const TextCompose: React.FC<Props> = (props) => {
             id="variantToUse"
             label="Variant to use"
             helperText="Select the variant to use from the generated variants"
-            min={0}
+            min={1}
             max={10}
             step={1}
             value={config.variantToUse}
-            onChange={(value: number) => handleChangeConfig("n", value)}
+            onChange={(value: number) => handleChangeConfig("n", value - 1)}
           />
           <RangeInput
             id="topP"
@@ -268,7 +281,7 @@ export const TextCompose: React.FC<Props> = (props) => {
         <Checkbox
           id="show-in-console"
           label="Show rusults in console"
-          helperText="Press ⌥⌘I to check the payload in the console."
+          helperText="Press ⌥⌘I to debug and check the payload in the console."
           checked={showInConsole}
           onChange={(e) => setShowInConsole(e.target.checked)}
         />
