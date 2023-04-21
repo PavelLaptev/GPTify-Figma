@@ -1,2 +1,2 @@
 export { useResize } from "./useResize";
-export { useOpenAICompletion } from "./useOpenAICompletion";
+export { useOpenAIText } from "./useOpenAIText";

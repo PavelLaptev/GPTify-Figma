@@ -10,8 +10,18 @@ interface Props {
 }
 
 export const Error: React.FC<Props> = (props) => {
+  const wrapRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    console.log("wrapRef", wrapRef);
+
+    if (wrapRef.current) {
+      wrapRef.current.style.height = "100%";
+    }
+  }, [wrapRef]);
+
   return (
-    <Layout gap="null">
+    <Layout gap="null" ref={wrapRef}>
       <Layout gap="medium">
         <HeaderWrap setView={props.setView}>
           <HeaderBack

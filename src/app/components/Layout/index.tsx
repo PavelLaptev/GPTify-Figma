@@ -9,7 +9,7 @@ interface Props {
 }
 
 // Add parent class for sub-components
-export const Layout: React.FC<Props> = (props) => {
+export const Layout = React.forwardRef<HTMLElement, Props>((props, ref) => {
   return (
     <section
       className={`${styles.wrap} ${props.className} ${
@@ -18,11 +18,12 @@ export const Layout: React.FC<Props> = (props) => {
       style={{
         flexDirection: props.direction,
       }}
+      ref={ref}
     >
       {props.children}
     </section>
   );
-};
+});
 
 Layout.defaultProps = {
   className: "",

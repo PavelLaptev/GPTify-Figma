@@ -1,5 +1,5 @@
 import React from "react";
-import { useOpenAICompletion } from "./../../hooks";
+import { useOpenAIText } from "./../../hooks";
 import { getTextnodes } from "../../../utils";
 import { prompt } from "./prompt";
 import {
@@ -15,7 +15,7 @@ import {
 export const Translate: React.FC<TextEditsViewProps> = (props) => {
   const [language, setLanguage] = React.useState("german");
 
-  useOpenAICompletion({
+  useOpenAIText({
     config: {
       secret: props.apiKey,
       instruction: prompt(language),

@@ -1,20 +1,38 @@
 export const toneOptions = [
-  { label: "Formal", value: "formal" },
-  { label: "Informal", value: "informal" },
-  { label: "Authoritative", value: "authoritative" },
-  { label: "Friendly", value: "friendly" },
-  { label: "Confident", value: "confident" },
-  { label: "Sincere", value: "sincere" },
-  { label: "Humorous", value: "humorous" },
-  { label: "Serious", value: "serious" },
-  { label: "Professional", value: "professional" },
-  { label: "Motivational", value: "motivational" },
-  { label: "Passionate", value: "passionate" },
-  { label: "Relaxed", value: "relaxed" },
-  { label: "Reliable", value: "reliable" },
-  { label: "Respectful", value: "respectful" },
-  { label: "Sarcastic", value: "sarcastic" },
-  { label: "Witty", value: "witty" },
-  { label: "Youthful", value: "youthful" },
-  { label: "Custom", value: "custom" },
+  {
+    value: "simpler",
+    label: "🙌 Simpler",
+  },
+  {
+    value: "playful",
+    label: "😜 Playful",
+  },
+  {
+    value: "romantic",
+    label: "💘 Romantic",
+  },
+  {
+    value: "funny",
+    label: "😄 Funny",
+  },
+  {
+    value: "formal",
+    label: "💼 Formal",
+  },
+  {
+    value: "calm",
+    label: "😌 Calm",
+  },
+  {
+    value: "bold",
+    label: "🦁 Bold",
+  },
+  {
+    value: "optimistic",
+    label: "🌞 Optimistic",
+  },
+  {
+    value: "curious",
+    label: "🔍 Curious",
+  },
 ];

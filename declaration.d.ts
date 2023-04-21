@@ -23,12 +23,14 @@ type viewsType =
   | "translate"
   | "launch"
   | "settings"
-  | "images"
   | "currency"
   | "dates"
   | "tone-of-voice"
   | "text-edits"
-  | "text-compose";
+  | "text-compose"
+  | "images"
+  | "create-images"
+  | "edit-image";
 
 type composeModelSettingsType = {
   model: string;

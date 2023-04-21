@@ -1,5 +1,5 @@
 import React from "react";
-import { useOpenAICompletion } from "./../../hooks";
+import { useOpenAIText } from "./../../hooks";
 import { getTextnodes } from "../../../utils";
 import {
   Input,
@@ -58,7 +58,7 @@ export const TextEdits: React.FC<TextEditsViewProps> = (props) => {
     getTextnodes();
   };
 
-  useOpenAICompletion({
+  useOpenAIText({
     config: {
       secret: props.apiKey,
       instruction: config.instruction,

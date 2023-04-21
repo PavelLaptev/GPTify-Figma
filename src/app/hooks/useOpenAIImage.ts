@@ -1,19 +1,16 @@
 import React from "react";
-import { makeEditRequest } from "./../../utils";
+import { makeEditRequest } from "../../utils";
 
-export interface UseOpenAICompletionProps {
+export interface useOpenAIImageProps {
   showInConsole?: boolean;
   config?: {
     secret: string;
     instruction: string;
-    model?: string;
-    temperature?: number;
-    stopSequences?: string[];
   };
   setErrorMessage: (message: string) => void;
 }
 
-export const useOpenAICompletion = (props: UseOpenAICompletionProps) => {
+export const useOpenAIImage = (props: useOpenAIImageProps) => {
   React.useEffect(() => {
     window.onmessage = async (event) => {
       const msg = event.data.pluginMessage;

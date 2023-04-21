@@ -1,5 +1,5 @@
 import React from "react";
-import { useOpenAICompletion } from "./../../hooks";
+import { useOpenAIText } from "./../../hooks";
 import { getTextnodes } from "../../../utils";
 import { prompt } from "./prompt";
 import {
@@ -14,7 +14,7 @@ import {
 export const Dates: React.FC<TextEditsViewProps> = (props) => {
   const [dateFormat, setDateFormat] = React.useState("DD/MM/YYYY");
 
-  useOpenAICompletion({
+  useOpenAIText({
     config: {
       secret: props.apiKey,
       instruction: prompt(dateFormat),

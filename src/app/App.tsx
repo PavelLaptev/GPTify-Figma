@@ -9,8 +9,10 @@ import {
   ToneOfVoice,
   TextCompose,
   TextEdits,
+  Images,
   Settings,
   Error,
+  CreateImages,
 } from "./views";
 import { useResize } from "./hooks";
 
@@ -49,7 +51,7 @@ const App = () => {
     }
   }, [errorMessage]);
 
-  const editTextProps = {
+  const viewProps = {
     apiKey,
     setView,
     setErrorMessage,
@@ -63,17 +65,23 @@ const App = () => {
       case "text":
         return <Text setView={setView} />;
       case "translate":
-        return <Translate {...editTextProps} />;
+        return <Translate {...viewProps} />;
       case "dates":
-        return <Dates {...editTextProps} />;
+        return <Dates {...viewProps} />;
       case "currency":
-        return <Currency {...editTextProps} />;
+        return <Currency {...viewProps} />;
       case "text-compose":
-        return <TextCompose {...editTextProps} />;
+        return <TextCompose {...viewProps} />;
       case "tone-of-voice":
-        return <ToneOfVoice {...editTextProps} />;
+        return <ToneOfVoice {...viewProps} />;
       case "text-edits":
-        return <TextEdits {...editTextProps} />;
+        return <TextEdits {...viewProps} />;
+
+      case "images":
+        return <Images {...viewProps} />;
+      case "create-images":
+        return <CreateImages {...viewProps} />;
+
       case "settings":
         return <Settings setView={setView} />;
       case "error":

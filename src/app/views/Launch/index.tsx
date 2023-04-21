@@ -4,7 +4,7 @@ import styles from "./styles.module.scss";
 
 import coverImg from "../../assets/cover.webp";
 
-const apiENVKey = process.env.REACT_APP_OPENAI_API_KEY;
+// const apiENVKey = process.env.REACT_APP_OPENAI_API_KEY;
 
 interface Props {
   setApiKey: (apiKey: string) => void;
@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const Launch: React.FC<Props> = (props) => {
-  const [inputValue, setInputValue] = React.useState(apiENVKey);
+  const [inputValue, setInputValue] = React.useState("");
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);

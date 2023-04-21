@@ -4,4 +4,10 @@
   padding: var(--container-padding);
   background-color: var(--color-background);
   height: 100%;
+  overflow-y: scroll;
+
+  // hide scrollbar
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }

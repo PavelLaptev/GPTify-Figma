@@ -1,1 +1,2 @@
-export const prompt = (language: string) => `Translate to ${language}`;
+export const prompt = (toneOfVOice: string) =>
+  `Convert into text ${toneOfVOice} tone of voice`;

@@ -1,5 +1,5 @@
 import React from "react";
-import { useOpenAICompletion } from "../../hooks";
+import { useOpenAIText } from "../../hooks";
 import { getTextnodes } from "../../../utils";
 import { toneOptions } from "./toneOptions";
 import { prompt } from "./prompt";
@@ -14,15 +14,20 @@ import {
 
 // Add parent class for sub-components
 export const ToneOfVoice: React.FC<TextEditsViewProps> = (props) => {
-  const [toneOfVoice, setToneOfVoice] = React.useState("formal");
+  const [toneOfVoice, setToneOfVoice] = React.useState(toneOptions[0].value);
 
-  useOpenAICompletion({
+  useOpenAIText({
     config: {
       secret: props.apiKey,
       instruction: prompt(toneOfVoice),
+      temperature: 0.7,
     },
     setErrorMessage: props.setErrorMessage,
   });
+
+  React.useEffect(() => {
+    console.log(prompt(toneOfVoice));
+  }, [toneOfVoice]);
 
   return (
     <Layout gap="null">

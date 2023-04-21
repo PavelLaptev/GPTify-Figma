@@ -24,9 +24,15 @@
   line-height: 120%;
   color: var(--main-text-color);
   opacity: 0.3;
+  transition: opacity 0.1s ease-in-out;
+
+  &:hover {
+    opacity: 0.5;
+  }
 }
 
 .active {
+  pointer-events: none;
   span {
     opacity: 1;
   }

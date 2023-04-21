@@ -16,7 +16,7 @@ export const makeEditRequest = async (prop: MakeEditRequestProps) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${prop.secret}qwe`,
+        Authorization: `Bearer ${prop.secret}`,
       },
       body: JSON.stringify({
         model: prop.model || "text-davinci-edit-001",

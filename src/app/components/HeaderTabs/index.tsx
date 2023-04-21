@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const HeaderTabs: React.FC<Props> = (props) => {
-  const [currentTab, setCurrentTab] = React.useState("text");
+  const [currentTab, setCurrentTab] = React.useState(props.currentTab);
 
   const handleTabChange = (tab: tabsType) => {
     setCurrentTab(tab);
@@ -27,14 +27,12 @@ export const HeaderTabs: React.FC<Props> = (props) => {
         <span className={styles.tabText}>Text</span>
       </button>
       <button
-        disabled
         className={`${styles.tab} ${currentTab === "images" && styles.active}`}
         onClick={() => {
           handleTabChange("images");
         }}
       >
         <span className={styles.tabText}>Images</span>
-        <span className={styles.soonLabel}>WIP</span>
       </button>
     </section>
   );
