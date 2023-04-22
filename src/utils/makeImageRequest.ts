@@ -2,6 +2,7 @@ interface MakeEditRequestProps {
   secret: string;
   prompt: string;
   size: string;
+  setErrorMessage: (message: string) => void;
 }
 
 export const makeImageRequest = async (prop: MakeEditRequestProps) => {
@@ -28,15 +29,7 @@ export const makeImageRequest = async (prop: MakeEditRequestProps) => {
 
     const image = responeData.data[0].b64_json;
 
-    console.log(image);
-
-    // const data = await response.json();
-
-    // if (data.choices && data?.choices[0]?.text) {
-    //   return data.choices[0].text;
-    // }
-
-    // throw new Error(data.error.message);
+    return image;
   } catch (error) {
     console.error("Request failed:", error);
     throw error;

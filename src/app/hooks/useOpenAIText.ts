@@ -41,7 +41,7 @@ export const useOpenAIText = (props: useOpenAITextProps) => {
             {
               pluginMessage: {
                 type: "set-textnode",
-                textObjectType: {
+                textObject: {
                   id: textObject.id,
                   text: resultTextNode,
                 },

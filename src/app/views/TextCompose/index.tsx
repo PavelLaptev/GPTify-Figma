@@ -123,7 +123,7 @@ export const TextCompose: React.FC<TextEditsViewProps> = (props) => {
               {
                 pluginMessage: {
                   type: "set-textnode",
-                  textObjectType: {
+                  textObject: {
                     id: textObject.id,
                     text: selectedTextVariant,
                   },

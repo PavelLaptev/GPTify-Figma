@@ -16,6 +16,12 @@ type textObjectType = {
   type: "TEXT";
 };
 
+type imageObjectType = {
+  id: string;
+  uint8Array: Uint8Array;
+  type: "IMAGE";
+};
+
 type viewsType =
   | "error"
   | "loading"

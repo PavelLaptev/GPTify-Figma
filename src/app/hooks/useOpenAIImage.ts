@@ -1,11 +1,12 @@
 import React from "react";
-import { makeEditRequest } from "../../utils";
+import { makeImageRequest } from "../../utils";
 
 export interface useOpenAIImageProps {
   showInConsole?: boolean;
   config?: {
     secret: string;
-    instruction: string;
+    prompt: string;
+    size: string;
   };
   setErrorMessage: (message: string) => void;
 }
@@ -15,32 +16,41 @@ export const useOpenAIImage = (props: useOpenAIImageProps) => {
     window.onmessage = async (event) => {
       const msg = event.data.pluginMessage;
 
-      if (msg.type === "get-textnodes") {
-        const textObjects = msg.textObjects;
+      if (msg.type === "get-imagenodes") {
+        const imageObjects = msg.imageObjects;
 
-        textObjects.forEach(async (textObject) => {
-          const resultTextNode = await makeEditRequest({
-            model: props.config.model,
+        imageObjects.forEach(async (imageObject) => {
+          const resultImageNode = await makeImageRequest({
             secret: props.config.secret,
-            input: textObject.text,
-            instruction: props.config.instruction,
-            temperature: props.config.temperature,
-            stopSequences: props.config.stopSequences,
+            size: props.config.size,
+            prompt: props.config.prompt,
             setErrorMessage: props.setErrorMessage,
           });
 
           if (props.showInConsole) {
-            console.log("resultTextNode", resultTextNode);
+            console.log("resultImageNode", resultImageNode);
             console.log("config", props.config);
           }
+
+          // convert base64 to ArrayBuffer
+          const base64Data = resultImageNode.replace(
+            /^data:image\/\w+;base64,/,
+            ""
+          );
+
+          const uint8Array = new Uint8Array(
+            atob(base64Data)
+              .split("")
+              .map((char) => char.charCodeAt(0))
+          );
 
           parent.postMessage(
             {
               pluginMessage: {
-                type: "set-textnode",
-                textObjectType: {
-                  id: textObject.id,
-                  text: resultTextNode,
+                type: "set-imagenode",
+                imageObject: {
+                  id: imageObject.id,
+                  uint8Array: uint8Array,
                 },
               },
             },
