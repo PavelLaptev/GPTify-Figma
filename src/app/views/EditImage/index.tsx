@@ -17,51 +17,122 @@ function scaleBase64ImageToCanvas(base64Img, canvas) {
   const img = new Image();
   img.src = base64Img;
 
-  return new Promise((resolve, reject) => {
-    img.onload = function () {
-      const imgWidth = img.width;
-      const imgHeight = img.height;
-      const canvasWidth = canvas.width;
-      const canvasHeight = canvas.height;
+  img.onload = function () {
+    const imgWidth = img.width;
+    const imgHeight = img.height;
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
 
-      // Calculate aspect ratio
-      const aspectRatio = imgWidth / imgHeight;
+    // Calculate aspect ratio
+    const aspectRatio = imgWidth / imgHeight;
 
-      // Calculate scaled dimensions based on aspect ratio
-      let scaledWidth, scaledHeight;
-      if (aspectRatio > 1) {
-        scaledWidth = canvasWidth;
-        scaledHeight = scaledWidth / aspectRatio;
-      } else {
-        scaledHeight = canvasHeight;
-        scaledWidth = scaledHeight * aspectRatio;
-      }
+    // Calculate scaled dimensions based on aspect ratio
+    let scaledWidth, scaledHeight;
+    if (aspectRatio > 1) {
+      scaledWidth = canvasWidth;
+      scaledHeight = scaledWidth / aspectRatio;
+    } else {
+      scaledHeight = canvasHeight;
+      scaledWidth = scaledHeight * aspectRatio;
+    }
 
-      // Calculate position to center the image
-      const x = (canvasWidth - scaledWidth) / 2;
-      const y = (canvasHeight - scaledHeight) / 2;
+    // Calculate position to center the image
+    const x = (canvasWidth - scaledWidth) / 2;
+    const y = (canvasHeight - scaledHeight) / 2;
 
-      // Get canvas context
-      const ctx = canvas.getContext("2d");
+    // Get canvas context
+    const ctx = canvas.getContext("2d");
+    ctx.globalCompositeOperation = "destination-over";
 
-      // Clear canvas
-      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    // Clear canvas
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-      // Draw image on canvas with scaled dimensions
-      ctx.drawImage(img, x, y, scaledWidth, scaledHeight);
+    // Draw image on canvas with scaled dimensions
+    ctx.drawImage(img, x, y, scaledWidth, scaledHeight);
 
-      // Get base64 representation of canvas content
-      const canvasData = canvas.toDataURL();
+    // add border to canvas
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 20;
+    ctx.strokeRect(0, 0, canvasWidth, canvasHeight);
 
-      // Resolve with the scaled image data
-      resolve(canvasData);
-    };
+    // eraseCanvasWithBrush(canvas, 20);
+    console.log("image loaded");
 
-    img.onerror = function () {
-      reject("Error loading image");
-    };
-  });
+    eraseCanvasWithBrush(canvas, 20);
+
+    // ctx.globalCompositeOperation = "destination-over";
+  };
 }
+
+function eraseCanvasWithBrush(canvas, brushSize) {
+  const ctx = canvas.getContext("2d");
+
+  // Set global composite operation to 'destination-out'
+  // This makes the brush erase pixels instead of draw
+  ctx.globalCompositeOperation = "destination-out";
+
+  // Add event listeners to track mouse movements and clicks
+  canvas.addEventListener("mousedown", startDrawing);
+  canvas.addEventListener("mousemove", continueDrawing);
+  canvas.addEventListener("mouseup", stopDrawing);
+  canvas.addEventListener("click", eraseOnClick);
+
+  // Variables to track the state of the drawing
+  let isDrawing = false;
+  let lastX, lastY;
+
+  function startDrawing(e) {
+    isDrawing = true;
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+  }
+
+  function continueDrawing(e) {
+    if (!isDrawing) return;
+
+    const [x, y] = [e.offsetX, e.offsetY];
+
+    // Calculate distance between last point and current point
+    const distance = Math.sqrt((x - lastX) ** 2 + (y - lastY) ** 2);
+
+    // Calculate the number of steps needed to fill the gap between points
+    const steps = Math.ceil(distance / brushSize);
+
+    // Calculate the increment for each step
+    const incrementX = (x - lastX) / steps;
+    const incrementY = (y - lastY) / steps;
+
+    // Draw the erasing brush in each step between points
+    for (let i = 0; i < steps; i++) {
+      ctx.beginPath();
+      ctx.arc(
+        lastX + i * incrementX,
+        lastY + i * incrementY,
+        brushSize / 2,
+        0,
+        2 * Math.PI
+      );
+      ctx.fill();
+    }
+
+    [lastX, lastY] = [x, y];
+  }
+
+  function stopDrawing() {
+    isDrawing = false;
+  }
+
+  function eraseOnClick(e) {
+    const [x, y] = [e.offsetX, e.offsetY];
+    ctx.beginPath();
+    ctx.arc(x, y, brushSize / 2, 0, 2 * Math.PI);
+    ctx.fill();
+  }
+}
+
+const eraseIfImageNotSet = (canvas) => {
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+};
 
 export const EditImage: React.FC<TextEditsViewProps> = (props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
@@ -69,7 +140,7 @@ export const EditImage: React.FC<TextEditsViewProps> = (props) => {
   const [showInConsole, setShowInConsole] = React.useState(false);
   const [prompt, setPrompt] = React.useState("");
   const [imageSize, setImageSize] = React.useState("256");
-  const [isImageSet, setIsImageSet] = React.useState(false);
+  const [imageData, setImageData] = React.useState<string>(null);
 
   React.useEffect(() => {
     parent.postMessage(
@@ -85,19 +156,26 @@ export const EditImage: React.FC<TextEditsViewProps> = (props) => {
       const { type, imageData } = event.data.pluginMessage;
 
       if (type === "set-selected-image") {
-        const canvas = canvasRef.current;
-
-        if (canvas) {
-          scaleBase64ImageToCanvas(
-            `data:image/png;base64,${imageData.preview}`,
-            canvas
-          ).then(() => {
-            setIsImageSet(true);
-          });
+        if (imageData) {
+          setImageData(imageData.preview);
+        } else {
+          setImageData(null);
         }
       }
     };
   }, []);
+
+  React.useEffect(() => {
+    const canvas = canvasRef.current;
+
+    // console.log("imageData", imageData);
+
+    if (imageData) {
+      scaleBase64ImageToCanvas(`data:image/png;base64,${imageData}`, canvas);
+    } else {
+      eraseIfImageNotSet(canvas);
+    }
+  }, [imageData]);
 
   return (
     <Layout gap="medium">
@@ -106,7 +184,7 @@ export const EditImage: React.FC<TextEditsViewProps> = (props) => {
           onClick={() => {
             props.setView("images");
           }}
-          label="Generate Images"
+          label="Edit Image"
         />
       </HeaderWrap>
       <p className="caption">
@@ -155,7 +233,7 @@ export const EditImage: React.FC<TextEditsViewProps> = (props) => {
         />
 
         <div className={styles.canvasWrap}>
-          {!isImageSet && (
+          {!imageData && (
             <span className={styles.canvasCaption}>
               Select an image to edit
             </span>

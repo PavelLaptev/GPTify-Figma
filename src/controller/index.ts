@@ -43,6 +43,11 @@ const getAndSendImage = async (selection) => {
       type: "set-selected-image",
       imageData,
     });
+  } else {
+    figma.ui.postMessage({
+      type: "set-selected-image",
+      imageData: null,
+    });
   }
 };
 
@@ -151,7 +156,6 @@ figma.ui.onmessage = async (msg) => {
 };
 
 figma.on("selectionchange", () => {
-  console.log("selectionchange");
   if (isEditImageEditView) {
     getAndSendImage(figma.currentPage.selection);
   }
