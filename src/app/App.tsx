@@ -13,6 +13,7 @@ import {
   Settings,
   Error,
   CreateImages,
+  EditImage,
 } from "./views";
 import { useResize } from "./hooks";
 
@@ -81,6 +82,8 @@ const App = () => {
         return <Images {...viewProps} />;
       case "create-images":
         return <CreateImages {...viewProps} />;
+      case "edit-image":
+        return <EditImage {...viewProps} />;
 
       case "settings":
         return <Settings setView={setView} />;

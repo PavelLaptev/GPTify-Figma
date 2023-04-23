@@ -5,7 +5,8 @@ import { handleStorage } from "./handleStorage";
 import {
   removeLeadingNewLines,
   findAllTextNodes,
-  findAllImagesNodes,
+  findAllSuiteblelForImageNodes,
+  findAllImageNodes,
 } from "./../utils";
 
 // clear console on reload
@@ -18,6 +19,32 @@ figma.skipInvisibleInstanceChildren = true;
 
 // clear stoorage
 // figma.clientStorage.setAsync("gptify-api-key", undefined);
+
+let isEditImageEditView = false;
+
+const getAndSendImage = async (selection) => {
+  const imageNodes = findAllImageNodes(selection);
+
+  if (imageNodes.length > 0) {
+    const exportedImage = await imageNodes[0].exportAsync({
+      format: "PNG",
+      constraint: {
+        type: "WIDTH",
+        value: 290,
+      },
+    });
+
+    const imageData = {
+      id: imageNodes[0].id,
+      preview: figma.base64Encode(exportedImage),
+    };
+
+    figma.ui.postMessage({
+      type: "set-selected-image",
+      imageData,
+    });
+  }
+};
 
 // listen for messages from the UI
 figma.ui.onmessage = async (msg) => {
@@ -68,12 +95,12 @@ figma.ui.onmessage = async (msg) => {
   }
 
   //////////////////////////////////
-  ////////// IMAGES NODES //////////
+  ///////// CREATE IMAGES //////////
   //////////////////////////////////
 
   if (msg.type === "get-imagenodes") {
     if (isSomethingSelected) {
-      const imageNodes = findAllImagesNodes(selection);
+      const imageNodes = findAllSuiteblelForImageNodes(selection);
 
       const imageObjects = imageNodes.map((node) => {
         return {
@@ -112,6 +139,22 @@ figma.ui.onmessage = async (msg) => {
 
     console.log("imageHash", imageHash);
   }
+
+  //////////////////////////////////
+  /////////// EDIT IMAGE ///////////
+  //////////////////////////////////
+
+  if (msg.type === "get-selected-image") {
+    isEditImageEditView = true;
+    getAndSendImage(figma.currentPage.selection);
+  }
 };
+
+figma.on("selectionchange", () => {
+  console.log("selectionchange");
+  if (isEditImageEditView) {
+    getAndSendImage(figma.currentPage.selection);
+  }
+});
 
 figma.currentPage.setRelaunchData({ open: "" });

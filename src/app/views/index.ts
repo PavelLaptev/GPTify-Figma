@@ -11,6 +11,7 @@ export { TextEdits } from "./TextEdits";
 
 export { Images } from "./Images";
 export { CreateImages } from "./CreateImages";
+export { EditImage } from "./EditImage";
 
 export { Settings } from "./Settings";
 export { Error } from "./Error";

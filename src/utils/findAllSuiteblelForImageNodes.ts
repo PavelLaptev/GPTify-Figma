@@ -1,4 +1,4 @@
-export const findAllImagesNodes = (nodes: readonly SceneNode[]) => {
+export const findAllSuiteblelForImageNodes = (nodes: readonly SceneNode[]) => {
   const textNodes = [];
 
   const findImageNodes = (nodes: readonly SceneNode[]) => {
