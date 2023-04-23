@@ -50,11 +50,6 @@ function scaleBase64ImageToCanvas(base64Img, canvas) {
     // Draw image on canvas with scaled dimensions
     ctx.drawImage(img, x, y, scaledWidth, scaledHeight);
 
-    // add border to canvas
-    ctx.strokeStyle = "black";
-    ctx.lineWidth = 20;
-    ctx.strokeRect(0, 0, canvasWidth, canvasHeight);
-
     // eraseCanvasWithBrush(canvas, 20);
     console.log("image loaded");
 
@@ -92,7 +87,7 @@ function eraseCanvasWithBrush(canvas, brushSize) {
     const [x, y] = [e.offsetX, e.offsetY];
 
     // Calculate distance between last point and current point
-    const distance = Math.sqrt((x - lastX) ** 2 + (y - lastY) ** 2);
+    const distance = Math.sqrt((x - lastX) ** 3 + (y - lastY) ** 3);
 
     // Calculate the number of steps needed to fill the gap between points
     const steps = Math.ceil(distance / brushSize);
@@ -140,6 +135,7 @@ export const EditImage: React.FC<TextEditsViewProps> = (props) => {
   const [showInConsole, setShowInConsole] = React.useState(false);
   const [prompt, setPrompt] = React.useState("");
   const [imageSize, setImageSize] = React.useState("256");
+  const [brushSize, setBrushSize] = React.useState(20);
   const [imageData, setImageData] = React.useState<string>(null);
 
   React.useEffect(() => {
@@ -252,10 +248,11 @@ export const EditImage: React.FC<TextEditsViewProps> = (props) => {
           min={3}
           max={100}
           step={1}
-          value={20}
+          value={brushSize}
           label="Brush size"
           onChange={(value: number) => {
-            console.log(value);
+            console.log("value", value);
+            setBrushSize(value);
           }}
         />
         <Button onClick={getImageNodes} label="Generate images" />
