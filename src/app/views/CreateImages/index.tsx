@@ -1,6 +1,6 @@
 import React from "react";
 import { getImageNodes } from "../../../utils";
-import { useOpenAIImage } from "../../hooks";
+import { useOpenAICreateImage } from "../../hooks";
 import {
   Input,
   Button,
@@ -17,7 +17,8 @@ export const CreateImages: React.FC<TextEditsViewProps> = (props) => {
   const [prompt, setPrompt] = React.useState("");
   const [imageSize, setImageSize] = React.useState("256");
 
-  useOpenAIImage({
+  useOpenAICreateImage({
+    showInConsole,
     config: {
       secret: props.apiKey,
       prompt: prompt,

@@ -1,3 +1,4 @@
 export { useResize } from "./useResize";
 export { useOpenAIText } from "./useOpenAIText";
-export { useOpenAIImage } from "./useOpenAIImage";
+export { useOpenAICreateImage } from "./useOpenAICreateImage";
+export { useOpenAIEditImage } from "./useOpenAIEditImage";

@@ -1,17 +1,19 @@
 import React from "react";
-import { makeImageRequest } from "../../utils";
+import { makeCreateImageRequest } from "../../utils";
 
-export interface useOpenAIImageProps {
+export interface useOpenAIEditImageProps {
   showInConsole?: boolean;
   config?: {
     secret: string;
     prompt: string;
+    image: string;
+    mask: string;
     size: string;
   };
   setErrorMessage: (message: string) => void;
 }
 
-export const useOpenAIImage = (props: useOpenAIImageProps) => {
+export const useOpenAIEditImage = (props: useOpenAIEditImageProps) => {
   React.useEffect(() => {
     window.onmessage = async (event) => {
       const msg = event.data.pluginMessage;
@@ -20,7 +22,7 @@ export const useOpenAIImage = (props: useOpenAIImageProps) => {
         const imageObjects = msg.imageObjects;
 
         imageObjects.forEach(async (imageObject) => {
-          const resultImageNode = await makeImageRequest({
+          const resultImageNode = await makeCreateImageRequest({
             secret: props.config.secret,
             size: props.config.size,
             prompt: props.config.prompt,
