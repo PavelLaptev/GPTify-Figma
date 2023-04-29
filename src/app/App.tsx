@@ -13,7 +13,10 @@ import {
   Settings,
   Error,
   CreateImages,
-  EditImage,
+  ProfilePicture,
+  Animals,
+  Art,
+  AnimeAvatar,
 } from "./views";
 import { useResize } from "./hooks";
 
@@ -82,8 +85,14 @@ const App = () => {
         return <Images {...viewProps} />;
       case "create-images":
         return <CreateImages {...viewProps} />;
-      case "edit-image":
-        return <EditImage {...viewProps} />;
+      case "profile-picture":
+        return <ProfilePicture {...viewProps} />;
+      case "animals":
+        return <Animals {...viewProps} />;
+      case "art":
+        return <Art {...viewProps} />;
+      case "anime-avatar":
+        return <AnimeAvatar {...viewProps} />;
 
       case "settings":
         return <Settings setView={setView} />;

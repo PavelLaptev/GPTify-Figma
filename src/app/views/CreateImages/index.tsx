@@ -34,7 +34,7 @@ export const CreateImages: React.FC<TextEditsViewProps> = (props) => {
           onClick={() => {
             props.setView("images");
           }}
-          label="Generate Images"
+          label="Custom images"
         />
       </HeaderWrap>
       <p className="caption">

@@ -15,6 +15,14 @@ import {
 } from "../../components";
 import styles from "./styles.module.scss";
 
+function canvasToBlob(canvas) {
+  // Convert the canvas to a Blob object
+  return new Promise(function (resolve) {
+    canvas.toBlob(function (blob) {
+      resolve(blob);
+    }, "image/png");
+  }) as Promise<Blob>;
+}
 function scaleBase64ImageToCanvas(
   base64Img,
   canvas,
@@ -61,8 +69,14 @@ function scaleBase64ImageToCanvas(
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
     // set scaled PNG image from canvas
-    const dataURI = canvas.toDataURL("image/png");
-    setResizedOriginalImageData(dataURI);
+    // const dataURI = canvas.toDataURL("image/png");
+    // setResizedOriginalImageData(dataURI);
+
+    // convert canvas to blob
+    canvasToBlob(canvas).then(function (blob) {
+      // set blob as resized original image data
+      setResizedOriginalImageData(blob);
+    });
 
     // eraseCanvasWithBrush(canvas, 20);
     console.log("image loaded");
@@ -152,10 +166,9 @@ export const EditImage: React.FC<TextEditsViewProps> = (props) => {
   const [imageSize, setImageSize] = React.useState("256");
   const [brushSize, setBrushSize] = React.useState(20);
 
-  const [originalImageData, setOriginalImageData] =
-    React.useState<string>(null);
+  const [originalImageData, setOriginalImageData] = React.useState<Blob>(null);
   const [resizedOriginalImageData, setResizedOriginalImageData] =
-    React.useState<string>(null);
+    React.useState<Blob>(null);
 
   React.useEffect(() => {
     parent.postMessage(
@@ -196,19 +209,19 @@ export const EditImage: React.FC<TextEditsViewProps> = (props) => {
     }
   }, [originalImageData, imageSize]);
 
-  const sendEdits = () => {
+  const sendEdits = async () => {
     // convert canvas to PNG image
-    const canvas = canvasRef.current;
-    const dataURL = canvas.toDataURL("image/png");
+    const maskImage = await canvasToBlob(canvasRef.current);
 
     makeEditImageRequest({
       secret: props.apiKey,
       prompt: prompt,
       image: resizedOriginalImageData,
-      mask: dataURL,
+      mask: maskImage,
       size: imageSize,
       setErrorMessage: props.setErrorMessage,
     });
+
     //     secret: string;
     // prompt: string;
     // image: string;

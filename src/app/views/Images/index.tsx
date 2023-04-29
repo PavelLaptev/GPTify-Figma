@@ -13,18 +13,41 @@ export const Images: React.FC<Props> = (props) => {
       </HeaderWrap>
       <Layout gap="medium">
         <List
-          label="Sandbox"
+          label="Presets"
           options={[
             {
-              label: "Create images",
+              label: "Profile picture",
               onClick: () => {
-                props.setView("create-images");
+                props.setView("profile-picture");
               },
             },
             {
-              label: "Edit image",
+              label: "Animals",
               onClick: () => {
-                props.setView("edit-image");
+                props.setView("animals");
+              },
+            },
+            {
+              label: "Art",
+              onClick: () => {
+                props.setView("art");
+              },
+            },
+            {
+              label: "Anime avatar",
+              onClick: () => {
+                props.setView("anime-avatar");
+              },
+            },
+          ]}
+        />
+        <List
+          label="Sandbox"
+          options={[
+            {
+              label: "Custom images",
+              onClick: () => {
+                props.setView("create-images");
               },
             },
           ]}

@@ -36,7 +36,11 @@ type viewsType =
   | "text-compose"
   | "images"
   | "create-images"
-  | "edit-image";
+  | "edit-image"
+  | "profile-picture"
+  | "animals"
+  | "art"
+  | "anime-avatar";
 
 type composeModelSettingsType = {
   model: string;

@@ -1,8 +1,8 @@
 interface MakeEditRequestProps {
   secret: string;
   prompt: string;
-  image: string;
-  mask: string;
+  image: Blob;
+  mask: Blob;
   size: string;
   setErrorMessage: (message: string) => void;
 }
@@ -30,7 +30,6 @@ export const makeEditImageRequest = async (prop: MakeEditRequestProps) => {
     const responeData = await response.json();
 
     console.log("responeData", responeData);
-    // const image = responeData.data[0].b64_json;
 
     // return image;
   } catch (error) {

@@ -27,8 +27,10 @@ export const useOpenAICreateImage = (props: useOpenAICreateImageProps) => {
             setErrorMessage: props.setErrorMessage,
           });
 
+          // console.log("config", props.config);
+
           if (props.showInConsole) {
-            console.log("resultImageNode", resultImageNode);
+            // console.log("resultImageNode", resultImageNode);
             console.log("config", props.config);
           }
 
