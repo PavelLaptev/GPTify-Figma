@@ -11,6 +11,7 @@ export interface useOpenAITextProps {
     stopSequences?: string[];
   };
   setErrorMessage: (message: string) => void;
+  setIsBusy: (isBusy: boolean) => void;
 }
 
 export const useOpenAIText = (props: useOpenAITextProps) => {
@@ -49,6 +50,11 @@ export const useOpenAIText = (props: useOpenAITextProps) => {
             },
             "*"
           );
+
+          // if last textObject, set isBusy to false
+          if (textObject.id === textObjects[textObjects.length - 1].id) {
+            props.setIsBusy(false);
+          }
         });
       }
     };

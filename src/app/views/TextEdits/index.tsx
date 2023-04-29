@@ -31,6 +31,7 @@ const modelOptions = {
 
 // Add parent class for sub-components
 export const TextEdits: React.FC<TextEditsViewProps> = (props) => {
+  const [isBusy, setIsBusy] = React.useState(false);
   const [showInConsole, setShowInConsole] = React.useState(false);
   const [instructionError, setInstructionError] = React.useState("");
 
@@ -55,7 +56,7 @@ export const TextEdits: React.FC<TextEditsViewProps> = (props) => {
       return;
     }
 
-    getTextnodes();
+    getTextnodes(setIsBusy);
   };
 
   useOpenAIText({
@@ -64,6 +65,7 @@ export const TextEdits: React.FC<TextEditsViewProps> = (props) => {
       instruction: config.instruction,
     },
     setErrorMessage: props.setErrorMessage,
+    setIsBusy,
   });
 
   return (
@@ -146,7 +148,11 @@ export const TextEdits: React.FC<TextEditsViewProps> = (props) => {
             value={config.topP}
             onChange={(value: number) => handleChangeConfig("topP", value)}
           />
-          <Button onClick={handleSanboxRequest} label="Generate" />
+          <Button
+            isBusy={isBusy}
+            onClick={handleSanboxRequest}
+            label="Generate"
+          />
         </Layout>
         <Divider />
         <Checkbox

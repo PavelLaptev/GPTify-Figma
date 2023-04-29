@@ -1,5 +1,7 @@
 import React from "react";
-import { getImageNodes } from "../../../utils";
+// import { getImageNodes } from "../../../utils";
+// import { useOpenAIEditImage } from "../../hooks";
+import { makeEditImageRequest } from "../../../utils";
 import {
   Input,
   Button,
@@ -13,7 +15,19 @@ import {
 } from "../../components";
 import styles from "./styles.module.scss";
 
-function scaleBase64ImageToCanvas(base64Img, canvas) {
+function canvasToBlob(canvas) {
+  // Convert the canvas to a Blob object
+  return new Promise(function (resolve) {
+    canvas.toBlob(function (blob) {
+      resolve(blob);
+    }, "image/png");
+  }) as Promise<Blob>;
+}
+function scaleBase64ImageToCanvas(
+  base64Img,
+  canvas,
+  setResizedOriginalImageData
+) {
   const img = new Image();
   img.src = base64Img;
 
@@ -49,6 +63,20 @@ function scaleBase64ImageToCanvas(base64Img, canvas) {
 
     // Draw image on canvas with scaled dimensions
     ctx.drawImage(img, x, y, scaledWidth, scaledHeight);
+
+    // Fill canvas with white color
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+    // set scaled PNG image from canvas
+    // const dataURI = canvas.toDataURL("image/png");
+    // setResizedOriginalImageData(dataURI);
+
+    // convert canvas to blob
+    canvasToBlob(canvas).then(function (blob) {
+      // set blob as resized original image data
+      setResizedOriginalImageData(blob);
+    });
 
     // eraseCanvasWithBrush(canvas, 20);
     console.log("image loaded");
@@ -133,10 +161,14 @@ export const EditImage: React.FC<TextEditsViewProps> = (props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   const [showInConsole, setShowInConsole] = React.useState(false);
+
   const [prompt, setPrompt] = React.useState("");
   const [imageSize, setImageSize] = React.useState("256");
   const [brushSize, setBrushSize] = React.useState(20);
-  const [imageData, setImageData] = React.useState<string>(null);
+
+  const [originalImageData, setOriginalImageData] = React.useState<Blob>(null);
+  const [resizedOriginalImageData, setResizedOriginalImageData] =
+    React.useState<Blob>(null);
 
   React.useEffect(() => {
     parent.postMessage(
@@ -153,9 +185,9 @@ export const EditImage: React.FC<TextEditsViewProps> = (props) => {
 
       if (type === "set-selected-image") {
         if (imageData) {
-          setImageData(imageData.preview);
+          setOriginalImageData(imageData.preview);
         } else {
-          setImageData(null);
+          setOriginalImageData(null);
         }
       }
     };
@@ -166,12 +198,49 @@ export const EditImage: React.FC<TextEditsViewProps> = (props) => {
 
     // console.log("imageData", imageData);
 
-    if (imageData) {
-      scaleBase64ImageToCanvas(`data:image/png;base64,${imageData}`, canvas);
+    if (originalImageData) {
+      scaleBase64ImageToCanvas(
+        `data:image/png;base64,${originalImageData}`,
+        canvas,
+        setResizedOriginalImageData
+      );
     } else {
       eraseIfImageNotSet(canvas);
     }
-  }, [imageData]);
+  }, [originalImageData, imageSize]);
+
+  const sendEdits = async () => {
+    // convert canvas to PNG image
+    const maskImage = await canvasToBlob(canvasRef.current);
+
+    makeEditImageRequest({
+      secret: props.apiKey,
+      prompt: prompt,
+      image: resizedOriginalImageData,
+      mask: maskImage,
+      size: imageSize,
+      setErrorMessage: props.setErrorMessage,
+    });
+
+    //     secret: string;
+    // prompt: string;
+    // image: string;
+    // mask: string;
+    // size: string;
+    // setErrorMessage: (message: string) => void;
+
+    // useOpenAIEditImage({
+    //   showInConsole,
+    //   config: {
+    //     secret: props.apiKey,
+    //     prompt: prompt,
+    //     image: resizedOriginalImageData,
+    //     mask: dataURL,
+    //     size: imageSize,
+    //   },
+    //   setErrorMessage: props.setErrorMessage,
+    // });
+  };
 
   return (
     <Layout gap="medium">
@@ -229,15 +298,15 @@ export const EditImage: React.FC<TextEditsViewProps> = (props) => {
         />
 
         <div className={styles.canvasWrap}>
-          {!imageData && (
+          {!originalImageData && (
             <span className={styles.canvasCaption}>
               Select an image to edit
             </span>
           )}
           <canvas
-            className={styles.canvas}
-            width={290}
-            height={290}
+            // className={styles.canvas}
+            width={imageSize}
+            height={imageSize}
             ref={canvasRef}
             id="canvas"
           />
@@ -255,7 +324,7 @@ export const EditImage: React.FC<TextEditsViewProps> = (props) => {
             setBrushSize(value);
           }}
         />
-        <Button onClick={getImageNodes} label="Generate images" />
+        <Button onClick={sendEdits} label="Generate images" />
 
         <Divider />
         <Checkbox

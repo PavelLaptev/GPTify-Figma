@@ -12,6 +12,7 @@ import {
 } from "../../components";
 
 export const Dates: React.FC<TextEditsViewProps> = (props) => {
+  const [isBusy, setIsBusy] = React.useState(false);
   const [dateFormat, setDateFormat] = React.useState("DD/MM/YYYY");
 
   useOpenAIText({
@@ -20,6 +21,7 @@ export const Dates: React.FC<TextEditsViewProps> = (props) => {
       instruction: prompt(dateFormat),
     },
     setErrorMessage: props.setErrorMessage,
+    setIsBusy,
   });
 
   return (
@@ -43,7 +45,11 @@ export const Dates: React.FC<TextEditsViewProps> = (props) => {
             value={dateFormat}
             onChange={(e) => setDateFormat(e.target.value)}
           />
-          <Button onClick={getTextnodes} label="Convert dates" />
+          <Button
+            isBusy={isBusy}
+            onClick={() => getTextnodes(setIsBusy)}
+            label="Convert dates"
+          />
         </Layout>
       </Layout>
       <ViewGithubSource link="https://github.com/PavelLaptev/GPTify-Figma/blob/main/src/app/views/Translate/prompt.ts" />

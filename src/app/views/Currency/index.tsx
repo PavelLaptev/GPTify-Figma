@@ -12,6 +12,7 @@ import {
 } from "../../components";
 
 export const Currency: React.FC<TextEditsViewProps> = (props) => {
+  const [isBusy, setIsBusy] = React.useState(false);
   const [convertFormat, setConvertFormat] = React.useState("USD");
 
   useOpenAIText({
@@ -20,6 +21,7 @@ export const Currency: React.FC<TextEditsViewProps> = (props) => {
       instruction: prompt(convertFormat),
     },
     setErrorMessage: props.setErrorMessage,
+    setIsBusy,
   });
 
   return (
@@ -45,7 +47,11 @@ export const Currency: React.FC<TextEditsViewProps> = (props) => {
             value={convertFormat}
             onChange={(e) => setConvertFormat(e.target.value)}
           />
-          <Button onClick={getTextnodes} label="Convert to currency" />
+          <Button
+            isBusy={isBusy}
+            onClick={() => getTextnodes(setIsBusy)}
+            label="Convert to currency"
+          />
         </Layout>
 
         <p className="caption">

@@ -1,6 +1,6 @@
 import React from "react";
 import { getImageNodes } from "../../../utils";
-import { useOpenAIImage } from "../../hooks";
+import { useOpenAICreateImage } from "../../hooks";
 import {
   Input,
   Button,
@@ -13,17 +13,20 @@ import {
 } from "../../components";
 
 export const CreateImages: React.FC<TextEditsViewProps> = (props) => {
+  const [isBusy, setIsBusy] = React.useState(false);
   const [showInConsole, setShowInConsole] = React.useState(false);
   const [prompt, setPrompt] = React.useState("");
   const [imageSize, setImageSize] = React.useState("256");
 
-  useOpenAIImage({
+  useOpenAICreateImage({
+    showInConsole,
     config: {
       secret: props.apiKey,
       prompt: prompt,
       size: imageSize,
     },
     setErrorMessage: props.setErrorMessage,
+    setIsBusy,
   });
 
   return (
@@ -33,7 +36,7 @@ export const CreateImages: React.FC<TextEditsViewProps> = (props) => {
           onClick={() => {
             props.setView("images");
           }}
-          label="Generate Images"
+          label="Custom images"
         />
       </HeaderWrap>
       <p className="caption">
@@ -71,7 +74,11 @@ export const CreateImages: React.FC<TextEditsViewProps> = (props) => {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
           />
-          <Button onClick={getImageNodes} label="Generate images" />
+          <Button
+            isBusy={isBusy}
+            onClick={() => getImageNodes(setIsBusy)}
+            label="Generate images"
+          />
         </Layout>
         <Divider />
         <Checkbox

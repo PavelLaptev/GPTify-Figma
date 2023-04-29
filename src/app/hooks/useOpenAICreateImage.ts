@@ -1,7 +1,7 @@
 import React from "react";
-import { makeImageRequest } from "../../utils";
+import { makeCreateImageRequest } from "../../utils";
 
-export interface useOpenAIImageProps {
+export interface useOpenAICreateImageProps {
   showInConsole?: boolean;
   config?: {
     secret: string;
@@ -9,9 +9,10 @@ export interface useOpenAIImageProps {
     size: string;
   };
   setErrorMessage: (message: string) => void;
+  setIsBusy: (isBusy: boolean) => void;
 }
 
-export const useOpenAIImage = (props: useOpenAIImageProps) => {
+export const useOpenAICreateImage = (props: useOpenAICreateImageProps) => {
   React.useEffect(() => {
     window.onmessage = async (event) => {
       const msg = event.data.pluginMessage;
@@ -20,15 +21,17 @@ export const useOpenAIImage = (props: useOpenAIImageProps) => {
         const imageObjects = msg.imageObjects;
 
         imageObjects.forEach(async (imageObject) => {
-          const resultImageNode = await makeImageRequest({
+          const resultImageNode = await makeCreateImageRequest({
             secret: props.config.secret,
             size: props.config.size,
             prompt: props.config.prompt,
             setErrorMessage: props.setErrorMessage,
           });
 
+          console.log("config", props.config);
+
           if (props.showInConsole) {
-            console.log("resultImageNode", resultImageNode);
+            // console.log("resultImageNode", resultImageNode);
             console.log("config", props.config);
           }
 
@@ -56,6 +59,11 @@ export const useOpenAIImage = (props: useOpenAIImageProps) => {
             },
             "*"
           );
+
+          // if last imageObject, set isBusy to false
+          if (imageObject.id === imageObjects[imageObjects.length - 1].id) {
+            props.setIsBusy(false);
+          }
         });
       }
     };

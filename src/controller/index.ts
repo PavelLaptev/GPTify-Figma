@@ -80,6 +80,8 @@ figma.ui.onmessage = async (msg) => {
         type: "get-textnodes",
         textObjects,
       });
+
+      figma.notify(`Process ${textObjects.length} text nodes. Please wait...`);
     } else {
       figma.notify("Please select at least one node");
     }
@@ -118,6 +120,8 @@ figma.ui.onmessage = async (msg) => {
         type: "get-imagenodes",
         imageObjects,
       });
+
+      figma.notify(`Generate ${imageObjects.length} images. Please wait...`);
     } else {
       figma.notify("Please select at least one node");
     }

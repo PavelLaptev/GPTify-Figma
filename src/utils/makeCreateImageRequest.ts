@@ -5,7 +5,7 @@ interface MakeEditRequestProps {
   setErrorMessage: (message: string) => void;
 }
 
-export const makeImageRequest = async (prop: MakeEditRequestProps) => {
+export const makeCreateImageRequest = async (prop: MakeEditRequestProps) => {
   try {
     const response = await fetch(
       "https://api.openai.com/v1/images/generations",
@@ -19,7 +19,7 @@ export const makeImageRequest = async (prop: MakeEditRequestProps) => {
           model: "image-alpha-001",
           prompt: prop.prompt,
           size: `${prop.size}x${prop.size}`,
-          num_images: 1,
+          n: 1,
           response_format: "b64_json",
         }),
       }
