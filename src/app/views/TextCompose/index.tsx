@@ -41,6 +41,7 @@ const modelOptions = {
 
 // Add parent class for sub-components
 export const TextCompose: React.FC<TextEditsViewProps> = (props) => {
+  const [isBusy, setIsBusy] = React.useState(false);
   const [showInConsole, setShowInConsole] = React.useState(false);
   const [promptError, setPromptError] = React.useState("");
 
@@ -84,6 +85,8 @@ export const TextCompose: React.FC<TextEditsViewProps> = (props) => {
 
       if (msg.type === "get-textnodes") {
         const textObjects = msg.textObjects;
+
+        setIsBusy(true);
 
         textObjects.forEach(async (textObject) => {
           const requestConfig = {
@@ -131,6 +134,11 @@ export const TextCompose: React.FC<TextEditsViewProps> = (props) => {
               },
               "*"
             );
+
+            // iif last text object, set busy to false
+            if (textObjects.indexOf(textObject) === textObjects.length - 1) {
+              setIsBusy(false);
+            }
           } catch (error) {
             console.log("Error generating prompts", error);
             return false;
@@ -270,7 +278,11 @@ export const TextCompose: React.FC<TextEditsViewProps> = (props) => {
               handleChangeConfig("presencePenalty", value)
             }
           />
-          <Button onClick={handleSanboxRequest} label="Generate" />
+          <Button
+            isBusy={isBusy}
+            onClick={handleSanboxRequest}
+            label="Generate"
+          />
         </Layout>
         <Divider />
         <Checkbox

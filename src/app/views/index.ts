@@ -15,7 +15,6 @@ export { ProfilePicture } from "./ProfilePicture";
 export { Animals } from "./Animals";
 export { Art } from "./Art";
 export { AnimeAvatar } from "./AnimeAvatar";
-// export { EditImage } from "./EditImage";
 
 export { Settings } from "./Settings";
 export { Error } from "./Error";

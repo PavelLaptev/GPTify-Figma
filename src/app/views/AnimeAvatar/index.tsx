@@ -10,6 +10,7 @@ import {
 } from "../../components";
 
 export const AnimeAvatar: React.FC<TextEditsViewProps> = (props) => {
+  const [isBusy, setIsBusy] = React.useState(false);
   const [imageSize, setImageSize] = React.useState("256");
 
   // person states
@@ -22,6 +23,7 @@ export const AnimeAvatar: React.FC<TextEditsViewProps> = (props) => {
       size: imageSize,
     },
     setErrorMessage: props.setErrorMessage,
+    setIsBusy,
   });
 
   return (
@@ -115,7 +117,11 @@ export const AnimeAvatar: React.FC<TextEditsViewProps> = (props) => {
             },
           ]}
         />
-        <Button onClick={getImageNodes} label="Generate images" />
+        <Button
+          isBusy={isBusy}
+          onClick={() => getImageNodes(setIsBusy)}
+          label="Generate images"
+        />
       </Layout>
     </Layout>
   );

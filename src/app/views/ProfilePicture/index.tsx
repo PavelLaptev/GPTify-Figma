@@ -11,6 +11,7 @@ import {
 } from "../../components";
 
 export const ProfilePicture: React.FC<TextEditsViewProps> = (props) => {
+  const [isBusy, setIsBusy] = React.useState(false);
   const [imageSize, setImageSize] = React.useState("256");
 
   // person states
@@ -24,12 +25,13 @@ export const ProfilePicture: React.FC<TextEditsViewProps> = (props) => {
       secret: props.apiKey,
       prompt: `a photo of ${ethnicGroups} ${
         sex !== "any" ? sex : "person"
-      } ${age} years old ${
+      } at the ${age} years old ${
         hairColor !== "any" ? `with ${hairColor} hair` : ""
       }`,
       size: imageSize,
     },
     setErrorMessage: props.setErrorMessage,
+    setIsBusy,
   });
 
   return (
@@ -177,7 +179,11 @@ export const ProfilePicture: React.FC<TextEditsViewProps> = (props) => {
             },
           ]}
         />
-        <Button onClick={getImageNodes} label="Generate images" />
+        <Button
+          isBusy={isBusy}
+          onClick={() => getImageNodes(setIsBusy)}
+          label="Generate images"
+        />
       </Layout>
     </Layout>
   );

@@ -14,6 +14,7 @@ import {
 
 // Add parent class for sub-components
 export const ToneOfVoice: React.FC<TextEditsViewProps> = (props) => {
+  const [isBusy, setIsBusy] = React.useState(false);
   const [toneOfVoice, setToneOfVoice] = React.useState(toneOptions[0].value);
 
   useOpenAIText({
@@ -23,6 +24,7 @@ export const ToneOfVoice: React.FC<TextEditsViewProps> = (props) => {
       temperature: 0.7,
     },
     setErrorMessage: props.setErrorMessage,
+    setIsBusy,
   });
 
   React.useEffect(() => {
@@ -48,7 +50,11 @@ export const ToneOfVoice: React.FC<TextEditsViewProps> = (props) => {
             value={toneOfVoice}
             onChange={(e) => setToneOfVoice(e.target.value)}
           />
-          <Button onClick={getTextnodes} label="Convert selected" />
+          <Button
+            isBusy={isBusy}
+            onClick={() => getTextnodes(setIsBusy)}
+            label="Convert selected"
+          />
         </Layout>
       </Layout>
       <ViewGithubSource link="https://github.com/PavelLaptev/GPTify-Figma/blob/main/src/app/views/Translate/prompt.ts" />

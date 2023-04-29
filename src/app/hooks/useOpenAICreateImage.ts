@@ -9,6 +9,7 @@ export interface useOpenAICreateImageProps {
     size: string;
   };
   setErrorMessage: (message: string) => void;
+  setIsBusy: (isBusy: boolean) => void;
 }
 
 export const useOpenAICreateImage = (props: useOpenAICreateImageProps) => {
@@ -27,7 +28,7 @@ export const useOpenAICreateImage = (props: useOpenAICreateImageProps) => {
             setErrorMessage: props.setErrorMessage,
           });
 
-          // console.log("config", props.config);
+          console.log("config", props.config);
 
           if (props.showInConsole) {
             // console.log("resultImageNode", resultImageNode);
@@ -58,6 +59,11 @@ export const useOpenAICreateImage = (props: useOpenAICreateImageProps) => {
             },
             "*"
           );
+
+          // if last imageObject, set isBusy to false
+          if (imageObject.id === imageObjects[imageObjects.length - 1].id) {
+            props.setIsBusy(false);
+          }
         });
       }
     };

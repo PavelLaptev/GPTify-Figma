@@ -13,6 +13,7 @@ import {
 } from "../../components";
 
 export const CreateImages: React.FC<TextEditsViewProps> = (props) => {
+  const [isBusy, setIsBusy] = React.useState(false);
   const [showInConsole, setShowInConsole] = React.useState(false);
   const [prompt, setPrompt] = React.useState("");
   const [imageSize, setImageSize] = React.useState("256");
@@ -25,6 +26,7 @@ export const CreateImages: React.FC<TextEditsViewProps> = (props) => {
       size: imageSize,
     },
     setErrorMessage: props.setErrorMessage,
+    setIsBusy,
   });
 
   return (
@@ -72,7 +74,11 @@ export const CreateImages: React.FC<TextEditsViewProps> = (props) => {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
           />
-          <Button onClick={getImageNodes} label="Generate images" />
+          <Button
+            isBusy={isBusy}
+            onClick={() => getImageNodes(setIsBusy)}
+            label="Generate images"
+          />
         </Layout>
         <Divider />
         <Checkbox
