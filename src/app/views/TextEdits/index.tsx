@@ -157,7 +157,7 @@ export const TextEdits: React.FC<TextEditsViewProps> = (props) => {
         <Divider />
         <Checkbox
           id="show-in-console"
-          label="Show rusults in console"
+          label="Show results in the console"
           helperText="Press ⌥⌘I to debug and check the payload in the console."
           checked={showInConsole}
           onChange={(e) => setShowInConsole(e.target.checked)}
