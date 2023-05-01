@@ -57,7 +57,7 @@ export const ToneOfVoice: React.FC<TextEditsViewProps> = (props) => {
           />
         </Layout>
       </Layout>
-      <ViewGithubSource link="https://github.com/PavelLaptev/GPTify-Figma/blob/main/src/app/views/Translate/prompt.ts" />
+      <ViewGithubSource link="https://github.com/PavelLaptev/GPTify-Figma/blob/main/src/app/views/ToneOfVoice/prompt.ts" />
     </Layout>
   );
 };

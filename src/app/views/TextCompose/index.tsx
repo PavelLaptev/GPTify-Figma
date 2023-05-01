@@ -160,7 +160,7 @@ export const TextCompose: React.FC<TextEditsViewProps> = (props) => {
           />
         </HeaderWrap>
         <p className="caption">
-          This is a sandbox for testing "Complete" models. You can generaete
+          This is a sandbox for testing "Complete" models. You can generate
           completely new text based on a prompt. You can experiment with the API
           using the{" "}
           <a

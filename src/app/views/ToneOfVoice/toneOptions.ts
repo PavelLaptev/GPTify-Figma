@@ -1,5 +1,9 @@
 export const toneOptions = [
   {
+    value: "succinct",
+    label: "✂️ Succinct",
+  },
+  {
     value: "simpler",
     label: "🙌 Simpler",
   },

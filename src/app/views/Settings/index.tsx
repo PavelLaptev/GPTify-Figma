@@ -33,7 +33,7 @@ export const Settings: React.FC<Props> = (props) => {
         </HeaderWrap>
         <Button onClick={handleResetApi} label="Reset API key" />
         <p className="caption">
-          If uoi have ideas for new features or find bugs, please let me know on{" "}
+          If you have ideas for new features or find bugs, please let me know on{" "}
           <a
             className="link"
             href="https://github.com/PavelLaptev/GPTify-Figma/issues"
