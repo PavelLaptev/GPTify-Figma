@@ -7,7 +7,10 @@ import {
   Select,
   HeaderWrap,
   HeaderBack,
+  ViewGithubSource,
 } from "../../components";
+
+import { prompt } from "./prompt";
 
 export const AnimeAvatar: React.FC<TextEditsViewProps> = (props) => {
   const [isBusy, setIsBusy] = React.useState(false);
@@ -19,7 +22,7 @@ export const AnimeAvatar: React.FC<TextEditsViewProps> = (props) => {
   useOpenAICreateImage({
     config: {
       secret: props.apiKey,
-      prompt: `picture in ${animeStyle} style`,
+      prompt: prompt(animeStyle),
       size: imageSize,
     },
     setErrorMessage: props.setErrorMessage,
@@ -27,16 +30,16 @@ export const AnimeAvatar: React.FC<TextEditsViewProps> = (props) => {
   });
 
   return (
-    <Layout gap="medium">
-      <HeaderWrap setView={props.setView}>
-        <HeaderBack
-          onClick={() => {
-            props.setView("images");
-          }}
-          label="Art"
-        />
-      </HeaderWrap>
+    <Layout gap="null">
       <Layout gap="medium">
+        <HeaderWrap setView={props.setView}>
+          <HeaderBack
+            onClick={() => {
+              props.setView("images");
+            }}
+            label="Art"
+          />
+        </HeaderWrap>
         <Select
           id="anime-style"
           label="Anime style"
@@ -123,6 +126,7 @@ export const AnimeAvatar: React.FC<TextEditsViewProps> = (props) => {
           label="Generate images"
         />
       </Layout>
+      <ViewGithubSource link="https://github.com/PavelLaptev/GPTify-Figma/blob/main/src/app/views/AnimeAvatar/prompt.ts" />
     </Layout>
   );
 };

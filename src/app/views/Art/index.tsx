@@ -7,7 +7,10 @@ import {
   Select,
   HeaderWrap,
   HeaderBack,
+  ViewGithubSource,
 } from "../../components";
+
+import { prompt } from "./prompt";
 
 export const Art: React.FC<TextEditsViewProps> = (props) => {
   const [isBusy, setIsBusy] = React.useState(false);
@@ -20,26 +23,26 @@ export const Art: React.FC<TextEditsViewProps> = (props) => {
   useOpenAICreateImage({
     config: {
       secret: props.apiKey,
-      prompt: `${artStyle !== "any" ? `a ${artStyle}` : "an"} ${
-        artSubject !== "any" ? artSubject : ""
-      } painting`,
+      prompt: prompt(artStyle, artSubject),
       size: imageSize,
     },
     setErrorMessage: props.setErrorMessage,
     setIsBusy,
   });
 
+  // console.log(prompt(artStyle, artSubject));
+
   return (
-    <Layout gap="medium">
-      <HeaderWrap setView={props.setView}>
-        <HeaderBack
-          onClick={() => {
-            props.setView("images");
-          }}
-          label="Art"
-        />
-      </HeaderWrap>
+    <Layout gap="null">
       <Layout gap="medium">
+        <HeaderWrap setView={props.setView}>
+          <HeaderBack
+            onClick={() => {
+              props.setView("images");
+            }}
+            label="Art"
+          />
+        </HeaderWrap>
         <Select
           id="art-style"
           label="Style"
@@ -93,7 +96,6 @@ export const Art: React.FC<TextEditsViewProps> = (props) => {
             { value: "portraits", label: "Portraits" },
             { value: "seascapes", label: "Seascapes" },
             { value: "space", label: "Space" },
-            { value: "surreal", label: "Surreal" },
             { value: "vehicles", label: "Vehicles" },
           ]}
         />
@@ -124,6 +126,7 @@ export const Art: React.FC<TextEditsViewProps> = (props) => {
           label="Generate images"
         />
       </Layout>
+      <ViewGithubSource link="https://github.com/PavelLaptev/GPTify-Figma/blob/main/src/app/views/Art/prompt.ts" />
     </Layout>
   );
 };

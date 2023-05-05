@@ -8,7 +8,10 @@ import {
   Select,
   HeaderWrap,
   HeaderBack,
+  ViewGithubSource,
 } from "../../components";
+
+import { prompt } from "./prompt";
 
 export const ProfilePicture: React.FC<TextEditsViewProps> = (props) => {
   const [isBusy, setIsBusy] = React.useState(false);
@@ -23,28 +26,26 @@ export const ProfilePicture: React.FC<TextEditsViewProps> = (props) => {
   useOpenAICreateImage({
     config: {
       secret: props.apiKey,
-      prompt: `a photo of ${ethnicGroups} ${
-        sex !== "any" ? sex : "person"
-      } at the ${age} years old ${
-        hairColor !== "any" ? `with ${hairColor} hair` : ""
-      }`,
+      prompt: prompt(ethnicGroups, sex, age, hairColor),
       size: imageSize,
     },
     setErrorMessage: props.setErrorMessage,
     setIsBusy,
   });
 
+  // console.log(prompt(ethnicGroups, sex, age, hairColor));
+
   return (
-    <Layout gap="medium">
-      <HeaderWrap setView={props.setView}>
-        <HeaderBack
-          onClick={() => {
-            props.setView("images");
-          }}
-          label="Profile picture"
-        />
-      </HeaderWrap>
+    <Layout gap="null">
       <Layout gap="medium">
+        <HeaderWrap setView={props.setView}>
+          <HeaderBack
+            onClick={() => {
+              props.setView("images");
+            }}
+            label="Profile picture"
+          />
+        </HeaderWrap>
         <Select
           id="sex"
           label="Sex"
@@ -185,6 +186,7 @@ export const ProfilePicture: React.FC<TextEditsViewProps> = (props) => {
           label="Generate images"
         />
       </Layout>
+      <ViewGithubSource link="https://github.com/PavelLaptev/GPTify-Figma/blob/main/src/app/views/ProfilePicture/prompt.ts" />
     </Layout>
   );
 };

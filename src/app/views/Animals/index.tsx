@@ -7,7 +7,10 @@ import {
   Select,
   HeaderWrap,
   HeaderBack,
+  ViewGithubSource,
 } from "../../components";
+
+import { prompt } from "./prompt";
 
 export const Animals: React.FC<TextEditsViewProps> = (props) => {
   const [isBusy, setIsBusy] = React.useState(false);
@@ -19,7 +22,7 @@ export const Animals: React.FC<TextEditsViewProps> = (props) => {
   useOpenAICreateImage({
     config: {
       secret: props.apiKey,
-      prompt: `a photo of ${animal !== "any" ? `a ${animal}` : "an animal"}`,
+      prompt: prompt(animal),
       size: imageSize,
     },
     setErrorMessage: props.setErrorMessage,
@@ -27,16 +30,17 @@ export const Animals: React.FC<TextEditsViewProps> = (props) => {
   });
 
   return (
-    <Layout gap="medium">
-      <HeaderWrap setView={props.setView}>
-        <HeaderBack
-          onClick={() => {
-            props.setView("images");
-          }}
-          label="Animals"
-        />
-      </HeaderWrap>
+    <Layout gap="null">
       <Layout gap="medium">
+        <HeaderWrap setView={props.setView}>
+          <HeaderBack
+            onClick={() => {
+              props.setView("images");
+            }}
+            label="Animals"
+          />
+        </HeaderWrap>
+
         <Select
           id="animal"
           label="Animal"
@@ -120,6 +124,7 @@ export const Animals: React.FC<TextEditsViewProps> = (props) => {
           label="Generate images"
         />
       </Layout>
+      <ViewGithubSource link="https://github.com/PavelLaptev/GPTify-Figma/blob/main/src/app/views/Animals/prompt.ts" />
     </Layout>
   );
 };
