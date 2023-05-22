@@ -89,6 +89,14 @@ export const TextEdits: React.FC<TextEditsViewProps> = (props) => {
             className="link"
           >
             OpenAI API documentation
+          </a>{" "}
+          and the{" "}
+          <a
+            href="https://beta.openai.com/playground"
+            target="_blank"
+            className="link"
+          >
+            OpenAI Playground
           </a>
           .
         </p>

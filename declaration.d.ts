@@ -43,7 +43,7 @@ type viewsType =
   | "anime-avatar";
 
 type composeModelSettingsType = {
-  model: string;
+  model: ComposeModelsType;
   prompt: string;
   temperature: number;
   stopSequences: string[];
@@ -63,6 +63,12 @@ type editsModelSettingsType = {
   stopSequences: string[];
   topP: number;
 };
+
+type ComposeModelsType =
+  | "text-davinci-003"
+  | "text-curie-001"
+  | "text-babbage-001"
+  | "text-ada-001";
 
 interface TextEditsViewProps {
   apiKey: string;

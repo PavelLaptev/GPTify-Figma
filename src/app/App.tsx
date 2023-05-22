@@ -74,12 +74,12 @@ const App = () => {
         return <Dates {...viewProps} />;
       case "currency":
         return <Currency {...viewProps} />;
-      case "text-compose":
-        return <TextCompose {...viewProps} />;
       case "tone-of-voice":
         return <ToneOfVoice {...viewProps} />;
       case "text-edits":
         return <TextEdits {...viewProps} />;
+      case "text-compose":
+        return <TextCompose {...viewProps} />;
 
       case "images":
         return <Images {...viewProps} />;

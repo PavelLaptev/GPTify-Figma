@@ -56,7 +56,6 @@ export const TextCompose: React.FC<TextEditsViewProps> = (props) => {
     presencePenalty: 1,
     maximumTokens: 150,
     n: 1,
-    variantToUse: 1,
   } as composeModelSettingsType);
 
   const handleChangeConfig = (
@@ -113,6 +112,14 @@ export const TextCompose: React.FC<TextEditsViewProps> = (props) => {
             className="link"
           >
             OpenAI API documentation
+          </a>{" "}
+          and the{" "}
+          <a
+            href="https://beta.openai.com/playground"
+            target="_blank"
+            className="link"
+          >
+            OpenAI Playground
           </a>
           .
         </p>
@@ -156,7 +163,7 @@ export const TextCompose: React.FC<TextEditsViewProps> = (props) => {
             min={0}
             max={1}
             step={0.1}
-            value={0.0}
+            value={config.temperature}
             onChange={(value: number) =>
               handleChangeConfig("temperature", value)
             }
@@ -188,7 +195,7 @@ export const TextCompose: React.FC<TextEditsViewProps> = (props) => {
             min={1}
             max={10}
             step={1}
-            value={config.variantToUse}
+            value={config.n}
             onChange={(value: number) => handleChangeConfig("n", value - 1)}
           />
           <RangeInput

@@ -30,20 +30,17 @@ export const useOpenAITextComplete = (props: useOpenAITextEditProps) => {
         props.setIsBusy(true);
 
         textObjects.forEach(async (textObject) => {
-          console.log("textObject", textObject);
           const requestConfig = {
             model: props.config.model,
             prompt: generatePromptString(textObject.text, props.config.prompt),
-            max_tokens: props.config.maximumTokens,
-            temperature: props.config.temperature,
-            top_p: props.config.topP,
-            n: props.config.n,
-            frequency_penalty: props.config.frequencyPenalty,
-            presence_penalty: props.config.presencePenalty,
-            ...((props.config.stopSequences.length > 0 && {
-              stop: props.config.stopSequences,
-            }) as {}),
+            temperature: 1,
+            max_tokens: 256,
+            top_p: 1,
+            frequency_penalty: 0,
+            presence_penalty: 0,
           };
+
+          // console.log("Request config:", requestConfig);
 
           try {
             const res = await fetch("https://api.openai.com/v1/completions", {
