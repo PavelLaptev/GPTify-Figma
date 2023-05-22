@@ -1,5 +1,5 @@
 import React from "react";
-import { useOpenAIText } from "../../hooks";
+import { useOpenAITextEdit } from "../../hooks";
 import { getTextnodes } from "../../../utils";
 import { prompt } from "./prompt";
 import {
@@ -15,7 +15,7 @@ export const Currency: React.FC<TextEditsViewProps> = (props) => {
   const [isBusy, setIsBusy] = React.useState(false);
   const [convertFormat, setConvertFormat] = React.useState("USD");
 
-  useOpenAIText({
+  useOpenAITextEdit({
     config: {
       secret: props.apiKey,
       instruction: prompt(convertFormat),

@@ -7,3 +7,4 @@ export { findAllImageNodes } from "./findAllImageNodes";
 export { makeCreateImageRequest } from "./makeCreateImageRequest";
 export { makeEditImageRequest } from "./makeEditImageRequest";
 export { getImageNodes } from "./getImageNodes";
+export { generatePromptString } from "./generatePromptString";

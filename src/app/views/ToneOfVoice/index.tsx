@@ -1,5 +1,5 @@
 import React from "react";
-import { useOpenAIText } from "../../hooks";
+import { useOpenAITextEdit } from "../../hooks";
 import { getTextnodes } from "../../../utils";
 import { toneOptions } from "./toneOptions";
 import { prompt } from "./prompt";
@@ -17,7 +17,7 @@ export const ToneOfVoice: React.FC<TextEditsViewProps> = (props) => {
   const [isBusy, setIsBusy] = React.useState(false);
   const [toneOfVoice, setToneOfVoice] = React.useState(toneOptions[0].value);
 
-  useOpenAIText({
+  useOpenAITextEdit({
     config: {
       secret: props.apiKey,
       instruction: prompt(toneOfVoice),
