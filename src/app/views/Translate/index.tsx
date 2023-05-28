@@ -1,5 +1,5 @@
 import React from "react";
-import { useOpenAITextEdit } from "./../../hooks";
+import { useOpenAITextComplete } from "./../../hooks";
 import { getTextnodes } from "../../../utils";
 import { prompt } from "./prompt";
 import {
@@ -16,10 +16,11 @@ export const Translate: React.FC<TextEditsViewProps> = (props) => {
   const [isBusy, setIsBusy] = React.useState(false);
   const [language, setLanguage] = React.useState("german");
 
-  useOpenAITextEdit({
+  useOpenAITextComplete({
     config: {
       secret: props.apiKey,
-      instruction: prompt(language),
+      prompt: prompt(language),
+      model: "text-davinci-003",
     },
     setErrorMessage: props.setErrorMessage,
     setIsBusy,

@@ -1,5 +1,5 @@
 import React from "react";
-import { useOpenAITextEdit } from "../../hooks";
+import { useOpenAITextComplete } from "../../hooks";
 import { getTextnodes } from "../../../utils";
 import { toneOptions } from "./toneOptions";
 import { prompt } from "./prompt";
@@ -17,11 +17,11 @@ export const ToneOfVoice: React.FC<TextEditsViewProps> = (props) => {
   const [isBusy, setIsBusy] = React.useState(false);
   const [toneOfVoice, setToneOfVoice] = React.useState(toneOptions[0].value);
 
-  useOpenAITextEdit({
+  useOpenAITextComplete({
     config: {
       secret: props.apiKey,
-      instruction: prompt(toneOfVoice),
-      temperature: 0.7,
+      prompt: prompt(toneOfVoice),
+      model: "text-davinci-003",
     },
     setErrorMessage: props.setErrorMessage,
     setIsBusy,
@@ -48,7 +48,7 @@ export const ToneOfVoice: React.FC<TextEditsViewProps> = (props) => {
             id="language"
             options={toneOptions}
             value={toneOfVoice}
-            onChange={(e) => setToneOfVoice(e.target.value)}
+            onChange={(e) => setToneOfVoice(e.target.value as toneOfVoiceType)}
           />
           <Button
             isBusy={isBusy}

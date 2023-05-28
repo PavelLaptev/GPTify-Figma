@@ -23,5 +23,3 @@ export const handleStorage = async (msg) => {
     figma.clientStorage.setAsync("gptify-api-key", undefined);
   }
 };
-
-// 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

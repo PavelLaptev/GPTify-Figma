@@ -67,7 +67,7 @@ export const useOpenAITextComplete = (props: useOpenAITextEditProps) => {
                   type: "set-textnode",
                   textObject: {
                     id: textObject.id,
-                    text: selectedTextVariant,
+                    text: selectedTextVariant.trim(),
                   },
                 },
               },

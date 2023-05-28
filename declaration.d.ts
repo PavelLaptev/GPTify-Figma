@@ -42,6 +42,16 @@ type viewsType =
   | "art"
   | "anime-avatar";
 
+type toneOfVoiceType =
+  | "simpler"
+  | "playful"
+  | "romantic"
+  | "funny"
+  | "formal"
+  | "calm"
+  | "optimistic"
+  | "curious";
+
 type composeModelSettingsType = {
   model: ComposeModelsType;
   prompt: string;
