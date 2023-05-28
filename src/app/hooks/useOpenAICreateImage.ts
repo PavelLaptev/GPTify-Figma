@@ -66,6 +66,10 @@ export const useOpenAICreateImage = (props: useOpenAICreateImageProps) => {
           }
         });
       }
+
+      if (msg.type === "reset-busy-status") {
+        props.setIsBusy(false);
+      }
     };
   }, [props.config, props.showInConsole]);
 };

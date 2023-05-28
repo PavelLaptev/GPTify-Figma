@@ -38,7 +38,8 @@ const App = () => {
       const msg = event.data.pluginMessage;
 
       if (msg.type === "get-api-key") {
-        console.log("msg", msg);
+        // console.log("msg", msg);
+
         if (msg.apiKey) {
           setApiKey(msg.apiKey);
           setView("text");

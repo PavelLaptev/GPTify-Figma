@@ -22,6 +22,14 @@ figma.skipInvisibleInstanceChildren = true;
 
 let isEditImageEditView = false;
 
+const handleEmptySelection = () => {
+  figma.notify("🚨 Please select at least one node");
+
+  figma.ui.postMessage({
+    type: "reset-busy-status",
+  });
+};
+
 const getAndSendImage = async (selection) => {
   const imageNodes = findAllImageNodes(selection);
 
@@ -83,7 +91,7 @@ figma.ui.onmessage = async (msg) => {
 
       figma.notify(`Process ${textObjects.length} text nodes. Please wait...`);
     } else {
-      figma.notify("Please select at least one node");
+      handleEmptySelection();
     }
   }
 
@@ -123,7 +131,7 @@ figma.ui.onmessage = async (msg) => {
 
       figma.notify(`Generate ${imageObjects.length} images. Please wait...`);
     } else {
-      figma.notify("Please select at least one node");
+      handleEmptySelection();
     }
   }
 

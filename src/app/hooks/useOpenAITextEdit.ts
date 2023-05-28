@@ -57,6 +57,10 @@ export const useOpenAITextEdit = (props: useOpenAITextEditProps) => {
           }
         });
       }
+
+      if (msg.type === "reset-busy-status") {
+        props.setIsBusy(false);
+      }
     };
   }, [props.config, props.showInConsole]);
 };

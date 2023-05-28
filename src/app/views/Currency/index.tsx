@@ -36,10 +36,7 @@ export const Currency: React.FC<TextEditsViewProps> = (props) => {
             label="Currency"
           />
         </HeaderWrap>
-        <p className="caption">
-          This prompt will find any currencies in your text and convert them
-          into your preferred currency and format.
-        </p>
+        <p className="caption">The prompt helps you convert currency.</p>
 
         <Layout gap="small">
           <Input
