@@ -1,6 +1,6 @@
 import React from "react";
 // import { getImageNodes } from "../../../utils";
-// import { useOpenAIEditImage } from "../../hooks";
+// import { useOpenAIImageEdit } from "../../hooks";
 import { makeEditImageRequest } from "../../../utils";
 import {
   Input,
@@ -229,7 +229,7 @@ export const EditImage: React.FC<TextEditsViewProps> = (props) => {
     // size: string;
     // setErrorMessage: (message: string) => void;
 
-    // useOpenAIEditImage({
+    // useOpenAIImageEdit({
     //   showInConsole,
     //   config: {
     //     secret: props.apiKey,

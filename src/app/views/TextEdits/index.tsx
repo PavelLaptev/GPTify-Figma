@@ -1,5 +1,5 @@
 import React from "react";
-import { useOpenAIText } from "./../../hooks";
+import { useOpenAITextEdit } from "./../../hooks";
 import { getTextnodes } from "../../../utils";
 import {
   Input,
@@ -59,7 +59,7 @@ export const TextEdits: React.FC<TextEditsViewProps> = (props) => {
     getTextnodes(setIsBusy);
   };
 
-  useOpenAIText({
+  useOpenAITextEdit({
     config: {
       secret: props.apiKey,
       instruction: config.instruction,
@@ -89,6 +89,14 @@ export const TextEdits: React.FC<TextEditsViewProps> = (props) => {
             className="link"
           >
             OpenAI API documentation
+          </a>{" "}
+          and the{" "}
+          <a
+            href="https://beta.openai.com/playground"
+            target="_blank"
+            className="link"
+          >
+            OpenAI Playground
           </a>
           .
         </p>

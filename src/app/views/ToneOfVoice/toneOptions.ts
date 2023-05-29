@@ -1,9 +1,5 @@
 export const toneOptions = [
   {
-    value: "succinct",
-    label: "✂️ Succinct",
-  },
-  {
     value: "simpler",
     label: "🙌 Simpler",
   },
@@ -28,10 +24,6 @@ export const toneOptions = [
     label: "😌 Calm",
   },
   {
-    value: "bold",
-    label: "🦁 Bold",
-  },
-  {
     value: "optimistic",
     label: "🌞 Optimistic",
   },
@@ -39,4 +31,4 @@ export const toneOptions = [
     value: "curious",
     label: "🔍 Curious",
   },
-];
+] as { value: toneOfVoiceType; label: string }[];

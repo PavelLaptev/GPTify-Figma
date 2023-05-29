@@ -10,7 +10,7 @@ export const useResize = (
     const paddings = 40;
 
     // get height of the first element
-    const height = parentRef.current.children[0].clientHeight + paddings;
+    const height = parentRef.current.children[0].scrollHeight + paddings;
 
     // console.log("height", height);
     console.log("view", view);

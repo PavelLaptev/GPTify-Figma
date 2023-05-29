@@ -38,7 +38,8 @@ const App = () => {
       const msg = event.data.pluginMessage;
 
       if (msg.type === "get-api-key") {
-        console.log("msg", msg);
+        // console.log("msg", msg);
+
         if (msg.apiKey) {
           setApiKey(msg.apiKey);
           setView("text");
@@ -74,12 +75,12 @@ const App = () => {
         return <Dates {...viewProps} />;
       case "currency":
         return <Currency {...viewProps} />;
-      case "text-compose":
-        return <TextCompose {...viewProps} />;
       case "tone-of-voice":
         return <ToneOfVoice {...viewProps} />;
       case "text-edits":
         return <TextEdits {...viewProps} />;
+      case "text-compose":
+        return <TextCompose {...viewProps} />;
 
       case "images":
         return <Images {...viewProps} />;

@@ -1,7 +1,7 @@
 import React from "react";
 import { makeCreateImageRequest } from "../../utils";
 
-export interface useOpenAIEditImageProps {
+export interface useOpenAIImageEditProps {
   showInConsole?: boolean;
   config?: {
     secret: string;
@@ -13,7 +13,7 @@ export interface useOpenAIEditImageProps {
   setErrorMessage: (message: string) => void;
 }
 
-export const useOpenAIEditImage = (props: useOpenAIEditImageProps) => {
+export const useOpenAIImageEdit = (props: useOpenAIImageEditProps) => {
   React.useEffect(() => {
     window.onmessage = async (event) => {
       const msg = event.data.pluginMessage;

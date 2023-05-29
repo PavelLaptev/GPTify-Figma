@@ -1,7 +1,7 @@
 import React from "react";
 import { makeEditRequest } from "../../utils";
 
-export interface useOpenAITextProps {
+export interface useOpenAITextEditProps {
   showInConsole?: boolean;
   config?: {
     secret: string;
@@ -14,7 +14,7 @@ export interface useOpenAITextProps {
   setIsBusy: (isBusy: boolean) => void;
 }
 
-export const useOpenAIText = (props: useOpenAITextProps) => {
+export const useOpenAITextEdit = (props: useOpenAITextEditProps) => {
   React.useEffect(() => {
     window.onmessage = async (event) => {
       const msg = event.data.pluginMessage;
@@ -56,6 +56,10 @@ export const useOpenAIText = (props: useOpenAITextProps) => {
             props.setIsBusy(false);
           }
         });
+      }
+
+      if (msg.type === "reset-busy-status") {
+        props.setIsBusy(false);
       }
     };
   }, [props.config, props.showInConsole]);

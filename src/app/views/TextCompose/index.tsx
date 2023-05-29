@@ -11,6 +11,7 @@ import {
   Divider,
   Checkbox,
 } from "../../components";
+import { useOpenAITextComplete } from "../../hooks";
 
 const modelOptions = {
   "text-davinci-003": {
@@ -55,7 +56,6 @@ export const TextCompose: React.FC<TextEditsViewProps> = (props) => {
     presencePenalty: 1,
     maximumTokens: 150,
     n: 1,
-    variantToUse: 1,
   } as composeModelSettingsType);
 
   const handleChangeConfig = (
@@ -74,79 +74,22 @@ export const TextCompose: React.FC<TextEditsViewProps> = (props) => {
     parent.postMessage({ pluginMessage: { type: "get-textnodes" } }, "*");
   };
 
-  const generatePromptString = (text: string, prompt: string) => {
-    // if prompt contains ${text} replace it with the text
-    return prompt.replace("${text}", text);
-  };
-
-  React.useEffect(() => {
-    window.onmessage = async (event) => {
-      const msg = event.data.pluginMessage;
-
-      if (msg.type === "get-textnodes") {
-        const textObjects = msg.textObjects;
-
-        setIsBusy(true);
-
-        textObjects.forEach(async (textObject) => {
-          const requestConfig = {
-            model: config.model,
-            prompt: generatePromptString(textObject.text, config.prompt),
-            max_tokens: config.maximumTokens,
-            temperature: config.temperature,
-            top_p: config.topP,
-            n: config.n,
-            frequency_penalty: config.frequencyPenalty,
-            presence_penalty: config.presencePenalty,
-            ...((config.stopSequences.length > 0 && {
-              stop: config.stopSequences,
-            }) as {}),
-          };
-
-          try {
-            const res = await fetch("https://api.openai.com/v1/completions", {
-              method: "POST",
-              headers: {
-                "content-type": "application/json",
-                authorization: `Bearer ${props.apiKey}`,
-              },
-              body: JSON.stringify(requestConfig),
-            });
-
-            const data = await res.json();
-
-            if (showInConsole) {
-              console.log("Request config:", requestConfig);
-              console.log("Response data:", data);
-            }
-
-            const selectedTextVariant = data.choices[0].text;
-
-            parent.postMessage(
-              {
-                pluginMessage: {
-                  type: "set-textnode",
-                  textObject: {
-                    id: textObject.id,
-                    text: selectedTextVariant,
-                  },
-                },
-              },
-              "*"
-            );
-
-            // iif last text object, set busy to false
-            if (textObjects.indexOf(textObject) === textObjects.length - 1) {
-              setIsBusy(false);
-            }
-          } catch (error) {
-            console.log("Error generating prompts", error);
-            return false;
-          }
-        });
-      }
-    };
-  }, [config, showInConsole]);
+  useOpenAITextComplete({
+    config: {
+      secret: props.apiKey,
+      model: config.model,
+      prompt: config.prompt,
+      maximumTokens: config.maximumTokens,
+      temperature: config.temperature,
+      topP: config.topP,
+      n: config.n,
+      frequencyPenalty: config.frequencyPenalty,
+      presencePenalty: config.presencePenalty,
+      stopSequences: config.stopSequences,
+    },
+    setErrorMessage: props.setErrorMessage,
+    setIsBusy,
+  });
 
   return (
     <Layout gap="null">
@@ -169,6 +112,14 @@ export const TextCompose: React.FC<TextEditsViewProps> = (props) => {
             className="link"
           >
             OpenAI API documentation
+          </a>{" "}
+          and the{" "}
+          <a
+            href="https://beta.openai.com/playground"
+            target="_blank"
+            className="link"
+          >
+            OpenAI Playground
           </a>
           .
         </p>
@@ -212,7 +163,7 @@ export const TextCompose: React.FC<TextEditsViewProps> = (props) => {
             min={0}
             max={1}
             step={0.1}
-            value={0.0}
+            value={config.temperature}
             onChange={(value: number) =>
               handleChangeConfig("temperature", value)
             }
@@ -244,7 +195,7 @@ export const TextCompose: React.FC<TextEditsViewProps> = (props) => {
             min={1}
             max={10}
             step={1}
-            value={config.variantToUse}
+            value={config.n}
             onChange={(value: number) => handleChangeConfig("n", value - 1)}
           />
           <RangeInput

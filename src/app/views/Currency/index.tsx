@@ -1,5 +1,5 @@
 import React from "react";
-import { useOpenAIText } from "../../hooks";
+import { useOpenAITextComplete } from "../../hooks";
 import { getTextnodes } from "../../../utils";
 import { prompt } from "./prompt";
 import {
@@ -15,10 +15,11 @@ export const Currency: React.FC<TextEditsViewProps> = (props) => {
   const [isBusy, setIsBusy] = React.useState(false);
   const [convertFormat, setConvertFormat] = React.useState("USD");
 
-  useOpenAIText({
+  useOpenAITextComplete({
     config: {
       secret: props.apiKey,
-      instruction: prompt(convertFormat),
+      prompt: prompt(convertFormat),
+      model: "text-davinci-003",
     },
     setErrorMessage: props.setErrorMessage,
     setIsBusy,
@@ -35,10 +36,7 @@ export const Currency: React.FC<TextEditsViewProps> = (props) => {
             label="Currency"
           />
         </HeaderWrap>
-        <p className="caption">
-          This prompt will find any currencies in your text and convert them
-          into your preferred currency and format.
-        </p>
+        <p className="caption">The prompt helps you convert currency.</p>
 
         <Layout gap="small">
           <Input
